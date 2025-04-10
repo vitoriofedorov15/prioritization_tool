@@ -168,7 +168,7 @@ class PrioritizationTool:
         frame = ttk.Frame(self.root, padding=20)
         frame.pack(fill="both", expand=True)
 
-        ttk.Label(frame, text="MoSCoW Prioritization", style="Header.TLabel").pack(pady=(0, 10))
+        ttk.Label(frame, text="Метод MoSCoW", style="Header.TLabel").pack(pady=(0, 10))
 
         description = (
             "Файл требований (CSV): должен содержать 4 столбца:\n"
@@ -200,7 +200,7 @@ class PrioritizationTool:
         frame = ttk.Frame(self.root, padding=20)
         frame.pack(fill="both", expand=True)
 
-        ttk.Label(frame, text="Kano Model Prioritization", style="Header.TLabel").pack(pady=(0, 10))
+        ttk.Label(frame, text="Модель Кано", style="Header.TLabel").pack(pady=(0, 10))
 
         description = (
             "Файл требований (CSV): должен содержать 5 столбцов:\n"
@@ -247,7 +247,7 @@ class PrioritizationTool:
         frame = ttk.Frame(self.root, padding=20)
         frame.pack(fill="both", expand=True)
 
-        ttk.Label(frame, text="TOPSIS Prioritization", style="Header.TLabel").pack(pady=(0, 10))
+        ttk.Label(frame, text="Метод TOPSIS", style="Header.TLabel").pack(pady=(0, 10))
 
         description = (
             "Файл требований (CSV): должен содержать численные оценки альтернатив по критериям и вес стейкхолдера:\n"
@@ -323,7 +323,7 @@ class PrioritizationTool:
         frame = ttk.Frame(self.root, padding=20)
         frame.pack(fill="both", expand=True)
 
-        ttk.Label(frame, text="Нечеткая приоритизация требований (Fuzzy TOPSIS)", style="Header.TLabel").pack(
+        ttk.Label(frame, text="Метод Fuzzy TOPSIS", style="Header.TLabel").pack(
             pady=(0, 10))
 
         container = ttk.Frame(frame)
@@ -515,7 +515,7 @@ class PrioritizationTool:
         frame = ttk.Frame(self.root, padding=20)
         frame.pack(fill="both", expand=True)
 
-        ttk.Label(frame, text="Метод нечеткого Делфи (Fuzzy Delphi)", style="Header.TLabel").pack(pady=(0, 10))
+        ttk.Label(frame, text="Метод Fuzzy Delphi", style="Header.TLabel").pack(pady=(0, 10))
 
         container = ttk.Frame(frame)
         container.pack(fill="both", expand=True)
@@ -617,7 +617,7 @@ class PrioritizationTool:
         frame = ttk.Frame(self.root, padding=20)
         frame.pack(fill="both", expand=True)
 
-        ttk.Label(frame, text="Нечеткая приоритизация требований (Fuzzy AHP)", style="Header.TLabel").pack(pady=(0, 10))
+        ttk.Label(frame, text="Метод Fuzzy AHP", style="Header.TLabel").pack(pady=(0, 10))
 
         container = ttk.Frame(frame)
         container.pack(fill="both", expand=True)
