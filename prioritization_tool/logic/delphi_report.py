@@ -82,6 +82,39 @@ def classify(results):
     low = [(k, v) for k, v in sorted_items if v['confidence_index'] < 0.4]
     return high, medium, low
 
+def generate_single_report(results, method_name, filename):
+    chart_path = f"output/chart_{method_name.lower().replace(' ', '_')}.png"
+    generate_bar_chart(results, chart_path, method_name)
+
+    high, med, low = classify(results)
+
+    pdf = UnicodePDF()
+    pdf.add_page()
+    pdf.set_auto_page_break(auto=True, margin=15)
+
+    pdf.set_font("DejaVu", "B", 14)
+    safe_multicell(pdf, f"Отчет по приоритизации требований ({method_name})", width=100, cell_height=8)
+    pdf.ln(10)
+
+    try:
+        if pdf.h - pdf.y > 100:
+            pdf.image(chart_path, x=10, y=pdf.get_y(), w=180)
+            pdf.ln(110)
+        else:
+            pdf.add_page()
+            pdf.image(chart_path, x=10, y=20, w=180)
+            pdf.ln(110)
+    except Exception as e:
+        safe_multicell(pdf, "[Диаграмма недоступна]")
+        pdf.ln(10)
+
+    write_section(pdf, "Высокий приоритет:", high)
+    write_section(pdf, "Средний приоритет:", med)
+    write_section(pdf, "Низкий приоритет:", low)
+
+    os.makedirs(os.path.dirname(filename), exist_ok=True)
+    pdf.output(filename)
+
 def generate_combined_report(results_type2, results_ifs, filename="output/fuzzy_delphi_report.pdf"):
     chart_type2 = "output/chart_delphi_type2.png"
     chart_ifs = "output/chart_delphi_ifs.png"

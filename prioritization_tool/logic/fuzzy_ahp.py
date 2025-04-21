@@ -111,7 +111,6 @@ def process_fuzzy_ahp_type1(
         crit_scores = []
 
         for crit in crit_names:
-            # Агрегируем оценки всех экспертов по критерию
             weighted_sum = np.zeros(3)
             total_weight = 0.0
 
@@ -130,9 +129,11 @@ def process_fuzzy_ahp_type1(
 
         # Итоговый приоритет альтернативы
         total_score = sum(w * s for w, s in zip(weights_fuzzy, crit_scores))
+
+        # Сохраняем с приведением типов
         alt_scores[alt] = {
-            "score": round(total_score, 4),
-            "comment": f"Итоговый приоритет: {round(total_score, 4)}"
+            "score": float(round(total_score, 4)),
+            "comment": f"Итоговый приоритет: {round(float(total_score), 4)}"
         }
 
     return alt_scores

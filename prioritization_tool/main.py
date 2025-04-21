@@ -37,9 +37,10 @@ class PrioritizationTool:
         style = ttk.Style()
         style.theme_use("clam")
 
+        # Основной стиль для кнопок (меньший размер)
         style.configure("TButton",
-                        font=("Segoe UI", 13, "bold"),
-                        padding=12,
+                        font=("Segoe UI", 10),  # Уменьшен размер шрифта
+                        padding=6,  # Уменьшен padding
                         foreground="#ffffff",
                         background="#2980b9")
 
@@ -47,65 +48,43 @@ class PrioritizationTool:
                   foreground=[('active', '#ffffff')],
                   background=[('active', '#1abc9c')])
 
+        # Стиль для заголовков
         style.configure("Header.TLabel",
                         font=("Segoe UI", 26, "bold"),
                         foreground="#2c3e50")
-        style.configure("Exit.TButton",
-                        font=("Segoe UI", 12, "bold"),
-                        padding=10,
-                        foreground="#ffffff",
-                        background="#c0392b")
 
-        style.map("Exit.TButton",
-                  background=[('active', '#e74c3c')])
-
+        # Стиль для информационных сообщений
         style.configure("Info.TLabel",
                         font=("Segoe UI", 12),
                         foreground="#2f3640",
                         wraplength=800,
                         justify="center")
 
+        # Стиль для статуса
         style.configure("Status.TLabel",
                         font=("Segoe UI", 12),
                         foreground="#27ae60")
 
-    def setup_style(self):
-        style = ttk.Style()
-        style.theme_use("clam")
-
-        style.configure("TButton",
-                        font=("Segoe UI", 13, "bold"),
-                        padding=12,
-                        foreground="#ffffff",
-                        background="#2980b9")
-
-        style.map("TButton",
-                  foreground=[('active', '#ffffff')],
-                  background=[('active', '#1abc9c')])
-
-        style.configure("Header.TLabel",
-                        font=("Segoe UI", 26, "bold"),
-                        foreground="#2c3e50")
-
-        style.configure("Info.TLabel",
-                        font=("Segoe UI", 12),
-                        foreground="#2f3640",
-                        wraplength=800,
-                        justify="center")
-
-        style.configure("Status.TLabel",
-                        font=("Segoe UI", 12),
-                        foreground="#27ae60")
-
-        # Отдельный стиль для кнопки выхода
+        # Стиль для кнопки выхода
         style.configure("Exit.TButton",
-                        font=("Segoe UI", 10, "bold"),
-                        padding=6,
+                        font=("Segoe UI", 9, "bold"),  # Уменьшен размер шрифта
+                        padding=4,  # Уменьшен padding
                         foreground="#ffffff",
                         background="#7f8c8d")
 
         style.map("Exit.TButton",
                   background=[('active', '#95a5a6')])
+
+        # Новый стиль для маленьких кнопок
+        style.configure("Small.TButton",
+                        font=("Segoe UI", 9),
+                        padding=4,  # Маленький padding
+                        foreground="#ffffff",
+                        background="#2980b9")
+
+        style.map("Small.TButton",
+                  foreground=[('active', '#ffffff')],
+                  background=[('active', '#1abc9c')])
 
     def show_method_selection_screen(self):
         self.clear_window()
@@ -165,35 +144,76 @@ class PrioritizationTool:
 
     def show_moscow_screen(self):
         self.clear_window()
-        frame = ttk.Frame(self.root, padding=20)
-        frame.pack(fill="both", expand=True)
 
-        ttk.Label(frame, text="Метод MoSCoW", style="Header.TLabel").pack(pady=(0, 10))
+        main_frame = ttk.Frame(self.root, padding=20)
+        main_frame.pack(fill="both", expand=True)
 
-        description = (
-            "Файл требований (CSV): должен содержать 4 столбца:\n"
-            "  - Альтернатива\n"
-            "  - Критерий\n"
-            "  - Стейкхолдер\n"
-            "  - Оценка (например: \"100% M\" или \"60% S, 40% C\")\n\n"
-            "Первая строка в каждом файле - названия столбцов в кавычках, разделитель - запятая.\n"
-            "Значение, соответствующее каждому столбцу, должно быть заключено в кавычки, разделитель - запятая.\n"
-            "Разрешены только такие комбинации оценок: M/S, S/C, C/W.\n\n"
-            "Файл весов (CSV): должен содержать столбцы \"Стейкхолдер\" и \"Вес\" :\n"
-            "Например \"S1\",\"1.5\""
+        ttk.Label(main_frame, text="Метод MoSCoW", style="Header.TLabel").pack(pady=(0, 20))
+
+        content_frame = ttk.Frame(main_frame)
+        content_frame.pack(fill="both", expand=True)
+
+        # Левая колонка
+        left_frame = ttk.Frame(content_frame)
+        left_frame.pack(side="left", fill="both", expand=True, padx=10)
+
+        requirements_description = (
+            "ФОРМАТ ФАЙЛА ТРЕБОВАНИЙ (CSV)\n\n"
+            "Обязательные требования:\n"
+            "• Первая строка - названия столбцов в кавычках\n"
+            "• Должны быть столбцы: \"Альтернатива\", \"Критерий\", \"Стейкхолдер\", \"Оценка\"\n"
+            "• Оценка — например: \"100% M\" или \"60% S, 40% C\"\n"
+            "• Разрешены только комбинации оценок: M/S, S/C, C/W\n"
+            "• Значения должны быть в кавычках\n"
+            "• Разделитель - запятая\n"
         )
 
-        msg = tk.Message(frame, text=description, width=800, font=("Segoe UI", 10), justify="left")
-        msg.pack(pady=(0, 15))
+        req_msg = tk.Message(left_frame, text=requirements_description, width=380, font=("Segoe UI", 9),
+                             justify="left")
+        req_msg.pack(pady=(0, 10))
+        ttk.Button(left_frame, text="📁 Загрузить данные", command=self.load_requirements).pack()
 
-        ttk.Button(frame, text="📁 Загрузить файл требований", command=self.load_requirements).pack(pady=4)
-        ttk.Button(frame, text="📁 Загрузить файл весов стейкхолдеров", command=self.load_weights).pack(pady=4)
-        ttk.Button(frame, text="✅ Выполнить приоритизацию (MoSCoW)", command=self.run_moscow).pack(pady=12)
+        # Правая колонка
+        right_frame = ttk.Frame(content_frame)
+        right_frame.pack(side="left", fill="both", expand=True, padx=10)
 
-        ttk.Button(frame, text="🔙 Вернуться назад", command=self.show_method_selection_screen).pack(pady=10)
+        weights_description = (
+            "ФОРМАТ ФАЙЛА ВЕСОВ (CSV)\n\n"
+            "Обязательные требования:\n"
+            "• Первая строка - названия столбцов в кавычках\n"
+            "• Должны быть столбцы: \"Стейкхолдер\" и \"Вес\"\n"
+            "• Пример строки: \"S1\",\"1.5\"\n"
+            "• Значения должны быть в кавычках\n"
+            "• Разделитель - запятая\n"
+        )
 
-        self.status = ttk.Label(frame, text="", style="Status.TLabel")
-        self.status.pack()
+        weights_msg = tk.Message(right_frame, text=weights_description, width=380, font=("Segoe UI", 9),
+                                 justify="left")
+        weights_msg.pack(pady=(0, 10))
+        ttk.Button(right_frame, text="📁 Загрузить данные", command=self.load_weights).pack()
+
+        # Фрейм для кнопок внизу
+        bottom_frame = ttk.Frame(main_frame)
+        bottom_frame.pack(fill="x", side="bottom", pady=(10, 5))
+        center_frame = ttk.Frame(bottom_frame)
+        center_frame.pack(side="left", padx=(20, 0))
+
+        ttk.Button(
+            center_frame,
+            text="✅ Сформировать отчет",
+            command=self.run_moscow,
+            style="TButton"
+        ).pack(side="left", expand=True, padx=8, pady=5)
+
+        ttk.Button(
+            bottom_frame,
+            text="🔙 Вернуться назад",
+            command=self.show_method_selection_screen,
+            style="Exit.TButton"
+        ).pack(side="right", padx=5, pady=5)
+
+        self.status = ttk.Label(main_frame, text="", style="Status.TLabel")
+        self.status.pack(side="bottom", pady=(5, 0))
 
     def show_kano_screen(self):
         self.clear_window()
@@ -203,6 +223,7 @@ class PrioritizationTool:
         ttk.Label(frame, text="Модель Кано", style="Header.TLabel").pack(pady=(0, 10))
 
         description = (
+            "ФОРМАТ ФАЙЛА ТРЕБОВАНИЙ ДЛЯ МЕТОДА КАНО (CSV)\n\n"
             "Файл требований (CSV): должен содержать 5 столбцов:\n"
             "  - Альтернатива\n"
             "  - Стейкхолдер\n"
@@ -210,25 +231,43 @@ class PrioritizationTool:
             "  - Дисфункциональный ответ (например: \"Indifferent\", \"Reverse\")\n"
             "  - Вес (например: \"1.0\", \"1.5\")\n\n"
             "Первая строка в каждом файле — названия столбцов в кавычках, разделитель — запятая.\n"
-            "Значение, соответствующее каждому столбцу, должно быть заключено в кавычки, разделитель — запятая.\n"
-            "Допустимые категории ответов: Must-be, One-dimensional, Attractive, Indifferent, Reverse, Questionable.\n\n"
+            "Значение, соответствующее каждому столбцу, должно быть заключено в кавычки, разделитель — запятая.\n\n"
+            "Допустимые категории ответов:\n"
+            "Must-be, One-dimensional, Attractive, Indifferent, Reverse, Questionable.\n"
         )
 
-        msg = tk.Message(frame, text=description, width=800, font=("Segoe UI", 10), justify="left")
+        msg = tk.Message(frame, text=description, width=800, font=("Segoe UI", 9), justify="left")
         msg.pack(pady=(0, 15))
 
-        ttk.Button(frame, text="📁 Загрузить CSV-файл для Кано", command=self.load_kano_file).pack(pady=5)
-        ttk.Button(frame, text="✅ Выполнить приоритизацию (Кано)", command=self.run_kano).pack(pady=12)
-        ttk.Button(frame, text="🔙 Вернуться назад", command=self.show_method_selection_screen).pack(pady=10)
+        ttk.Button(frame, text="📁 Загрузить данные", command=self.load_kano_file).pack(pady=5)
+        # Фрейм для кнопок внизу
+        bottom_frame = ttk.Frame(frame)
+        bottom_frame.pack(fill="x", side="bottom", pady=(10, 5))
+        center_frame = ttk.Frame(bottom_frame)
+        center_frame.pack(side="left", padx=(20, 0))
+
+        ttk.Button(
+            center_frame,
+            text="✅ Сформировать отчет",
+            command=self.run_kano,
+            style="TButton"
+        ).pack(side="left", expand=True, padx=5, pady=5)
+
+        ttk.Button(
+            bottom_frame,
+            text="🔙 Вернуться назад",
+            command=self.show_method_selection_screen,
+            style="Exit.TButton"
+        ).pack(side="right", padx=5, pady=5)
 
         self.status = ttk.Label(frame, text="", style="Status.TLabel")
-        self.status.pack()
+        self.status.pack(side="bottom", pady=(5, 0))
 
     def load_kano_file(self):
         path = filedialog.askopenfilename(title="Выберите CSV-файл с анкетой Кано", filetypes=[("CSV файлы", "*.csv")])
         if path:
             self.kano_csv_path = path
-            self.status.config(text="✅ Загружен файл для модели Кано")
+            self.status.config(text="✅ Файл требований загружен.")
 
     def run_kano(self):
         if not self.kano_csv_path:
@@ -238,7 +277,7 @@ class PrioritizationTool:
         try:
             results = kano.process_kano_csv(self.kano_csv_path)
             kano_report.generate_kano_report(results, filename="output/kano_report.pdf")
-            self.status.config(text="📄 Расчет завершен. Отчет сохранен в output/kano_report.pdf")
+            self.status.config(text="📄 Отчет сохранен в output/kano_report.pdf")
         except Exception as e:
             messagebox.showerror("❌ Ошибка", str(e))
 
@@ -250,6 +289,7 @@ class PrioritizationTool:
         ttk.Label(frame, text="Метод TOPSIS", style="Header.TLabel").pack(pady=(0, 10))
 
         description = (
+            "ФОРМАТ ФАЙЛА ТРЕБОВАНИЙ ДЛЯ ЧИСЛЕННОЙ ОЦЕНКИ (CSV)\n\n"
             "Файл требований (CSV): должен содержать численные оценки альтернатив по критериям и вес стейкхолдера:\n"
             "  - Альтернатива (например: \"Авторизация через соцсети\")\n"
             "  - Безопасность (например: \"7\")\n"
@@ -258,25 +298,43 @@ class PrioritizationTool:
             "  - Вес стейкхолдера (например: \"0.3\")\n\n"
             "Первая строка в каждом файле — названия столбцов в кавычках, разделитель — запятая.\n"
             "Значение, соответствующее каждому столбцу, должно быть заключено в кавычки, разделитель — запятая.\n"
-            "Все числовые значения должны быть заданы в единой шкале (например, от 1 до 10).\n\n"
+            "Все числовые значения должны быть заданы в единой шкале (например, от 1 до 10).\n"
         )
 
-        msg = tk.Message(frame, text=description, width=800, font=("Segoe UI", 10), justify="left")
+        msg = tk.Message(frame, text=description, width=800, font=("Segoe UI", 9), justify="left")
         msg.pack(pady=(0, 15))
 
-        ttk.Button(frame, text="📁 Загрузить CSV-файл (включая веса стейкхолдеров)", command=self.load_topsis_file).pack(
-            pady=5)
-        ttk.Button(frame, text="✅ Выполнить приоритизацию (TOPSIS)", command=self.run_topsis).pack(pady=12)
-        ttk.Button(frame, text="🔙 Вернуться назад", command=self.show_method_selection_screen).pack(pady=10)
+        ttk.Button(frame, text="📁 Загрузить данные", command=self.load_topsis_file, style="Small.TButton").pack(pady=3)
+
+        # Фрейм для кнопок внизу
+        bottom_frame = ttk.Frame(frame)
+        bottom_frame.pack(fill="x", side="bottom", pady=(10, 5))
+        center_frame = ttk.Frame(bottom_frame)
+        center_frame.pack(side="left", padx=(20, 0))
+
+        ttk.Button(
+            center_frame,
+            text="✅ Сформировать отчет",
+            command=self.run_topsis,
+            style="TButton"
+        ).pack(side="left", expand=True, padx=5, pady=5)
+
+        ttk.Button(
+            bottom_frame,
+            text="🔙 Вернуться назад",
+            command=self.show_method_selection_screen,
+            style="Exit.TButton"
+        ).pack(side="right", padx=5, pady=5)
 
         self.status = ttk.Label(frame, text="", style="Status.TLabel")
-        self.status.pack()
+        self.status.pack(side="bottom", pady=(5, 0))
+
 
     def load_topsis_file(self):
         path = filedialog.askopenfilename(title="Выберите CSV-файл для TOPSIS", filetypes=[("CSV файлы", "*.csv")])
         if path:
             self.topsis_file_path = path
-            self.status.config(text="✅ Файл загружен: " + os.path.basename(path))
+            self.status.config(text="✅ Файл требований загружен.")
 
     def load_requirements(self):
         path = filedialog.askopenfilename(title="Выберите CSV с требованиями", filetypes=[("CSV файлы", "*.csv")])
@@ -288,7 +346,7 @@ class PrioritizationTool:
         path = filedialog.askopenfilename(title="Выберите CSV с весами", filetypes=[("CSV файлы", "*.csv")])
         if path:
             self.weights_path = path
-            self.status.config(text="✅ Весы стейкхолдеров загружены.")
+            self.status.config(text="✅ Файл весов загружен.")
 
     def run_moscow(self):
         if not self.requirements_path or not self.weights_path:
@@ -300,7 +358,7 @@ class PrioritizationTool:
             weights = parser.load_weights(self.weights_path)
             results = moscow.calculate(req_data, weights)
             moscow_report.generate_pdf(results, filename="output/moscow_report.pdf")
-            self.status.config(text="📄 Расчёт завершён. Отчёт сохранён в output/moscow_report.pdf")
+            self.status.config(text="📄 Отчет сохранен в output/moscow_report.pdf")
         except Exception as e:
             messagebox.showerror("❌ Ошибка", str(e))
 
@@ -314,7 +372,7 @@ class PrioritizationTool:
             from prioritization_tool.logic.TOPSIS import topsis
             results = topsis.process_topsis(self.topsis_file_path)
             topsis_report.generate_topsis_report(results)
-            self.status.config(text="📄 Отчет TOPSIS сохранен в output/topsis_report.pdf")
+            self.status.config(text="📄 Отчет сохранен в output/topsis_report.pdf")
         except Exception as e:
             messagebox.showerror("Ошибка", str(e))
 
@@ -323,130 +381,183 @@ class PrioritizationTool:
         frame = ttk.Frame(self.root, padding=20)
         frame.pack(fill="both", expand=True)
 
-        ttk.Label(frame, text="Метод Fuzzy TOPSIS", style="Header.TLabel").pack(
-            pady=(0, 10))
-
+        ttk.Label(frame, text="Метод Fuzzy TOPSIS", style="Header.TLabel").pack(pady=(0, 10))
         container = ttk.Frame(frame)
         container.pack(fill="both", expand=True)
 
         # Левая колонка — Fuzzy TOPSIS Type-1
         left = ttk.Frame(container, padding=10)
         left.pack(side="left", fill="both", expand=True)
-
-        ttk.Label(left, text="Fuzzy TOPSIS Type-1 (трапециевидные числа)", style="SubHeader.TLabel").pack(pady=(0, 5))
+        ttk.Label(left, text="Fuzzy TOPSIS Type-1", style="SubHeader.TLabel").pack(pady=(0, 5))
 
         msg1 = tk.Message(
             left,
             text=(
-                "Файл требований (CSV): должен содержать текстовые оценки по критериям:\n"
-                "  - Альтернатива (например: \"Авторизация через соцсети\")\n"
-                "  - Один или несколько критериев с оценками из шкалы (например: \"Высоко\", \"Средне\")\n\n"
-                "Первая строка в каждом файле — названия столбцов в кавычках, разделитель — запятая.\n"
-                "Все значения должны быть заключены в кавычки.\n"
-                "Допустимые текстовые оценки определяются загруженной шкалой (например: \"Очень низко\", \"Низко\", \"Средне\", \"Высоко\", \"Очень высоко\")\n\n"
-                "Пример строки:\n"
-                "  \"Авторизация через соцсети\",\"Высоко\",\"Средне\",\"Низко\"\n"
-                "  \"Двухфакторная аутентификация\",\"Очень высоко\",\"Высоко\",\"Средне\"\n\n"
-                "Для работы необходимо загрузить файл шкалы соответствия текстовых оценок трапециевидным числам"
+                "ФОРМАТ ФАЙЛА ТРЕБОВАНИЙ (CSV)\n\n"
+                "Обязательные требования:\n"
+                "• Первая строка - названия столбцов в кавычках\n"
+                "• Первый столбец - \"Альтернатива\" (названия требований)\n"
+                "• Последующие столбцы - критерии оценки\n"
+                "• Все значения - текстовые оценки в кавычках\n"
+                "• Разделитель - запятая\n\n"
+                "ДОПУСТИМЫЕ ТЕКСТОВЫЕ ОЦЕНКИ:\n"
+                "Определяются загруженной шкалой (например: \"Очень низко\", \"Низко\",\n"
+                "\"Средне\", \"Высоко\", \"Очень высоко\")\n"
             ),
-            width=380,
-            font=("Segoe UI", 8),
+            width=500,
+            font=("Segoe UI", 9),
             justify="left"
         )
-
         msg1.pack(pady=(0, 5))
+        ttk.Button(left, text="📁 Загрузить данные", command=self.load_fuzzy_type1_file).pack(pady=5)
+
         msg_scale = tk.Message(
             left,
             text=(
-                "Файл шкалы (CSV): должен содержать соответствие между текстовыми оценками и трапециевидными числами:\n"
-               "Пример файла:\n"
-                "\"Очень низко\",\"(1,1,2,3)\"\n"
-                "\"Низко\",\"(2,3,4,5)\"\n"
-                "\"Средне\",\"(4,5,6,7)\"\n"
-                "..."
+                "ФОРМАТ ФАЙЛА СООТВЕТСТВИЙ (CSV)\n\n"
+                "Обязательные столбцы:\n"
+                "1. \"Оценка эксперта\" - текстовая оценка\n"
+                "2. \"Трапециевидное число\" - в формате \"(a,b,c,d)\"\n"
             ),
-            width=380,
-            font=("Segoe UI", 8),
+            width=500,
+            font=("Segoe UI", 9),
             justify="left"
         )
-        msg_scale.pack(pady=(0, 5))
-        ttk.Button(left, text="📁 Загрузить файл Type-1", command=self.load_fuzzy_type1_file).pack(pady=5)
+        msg_scale.pack(pady=(5, 5))
+        ttk.Button(left, text="📁 Загрузить данные", command=self.load_fuzzy_scale_file).pack(pady=5)
+        ttk.Button(left, text="✅ Сформировать отчет 1", command=self.run_fuzzy_topsis_type1).pack(pady=(10, 0))
 
         # Правая колонка — Intuitionistic TOPSIS
         right = ttk.Frame(container, padding=10)
         right.pack(side="left", fill="both", expand=True)
-
         ttk.Label(right, text="Intuitionistic Fuzzy TOPSIS", style="SubHeader.TLabel").pack(pady=(0, 5))
 
         msg2 = tk.Message(
             right,
             text=(
-                "ФОРМАТ ВХОДНОГО ФАЙЛА ДЛЯ INTUITIONISTIC FUZZY TOPSIS (CSV)\n\n"
+                "ФОРМАТ ФАЙЛА ТРЕБОВАНИЙ (CSV)\n\n"
                 "Обязательные требования:\n"
                 "• Первая строка - названия столбцов в кавычках\n"
                 "• Первый столбец - \"Альтернатива\" (названия требований)\n"
                 "• Последующие столбцы - критерии оценки\n"
-                "• Все значения - текстовые оценки в кавычках; "
+                "• Все значения - текстовые оценки в кавычках\n"
                 "• Разделитель - запятая\n\n"
-                "ДОПУСТИМЫЕ ТЕКСТОВЫЕ ОЦЕНКИ: "
+                "ДОПУСТИМЫЕ ТЕКСТОВЫЕ ОЦЕНКИ:\n"
                 "• Очень важно, и я уверен(a) "
                 "• Очень важно, но есть сомнения "
-                "• Важно, и я уверен(a) "
+                "• Важно, и я уверен(a)\n"
                 "• Важно, но есть сомнения "
                 "• Средне, но я уверен(a) "
-                "• Средне, и есть сомнения "
+                "• Средне, и есть сомнения\n"
                 "• Маловажно, но я уверен(a) "
-                "• Маловажно, и есть сомнения "
-                "• Неважно, но я уверен(a) "
-                "• Неважно, и есть сомнения "
-                "ПРИМЕР ФАЙЛА:\n"
-                "\"Альтернатива\",\"Безопасность\",\"Удобство\"\n"
-                "\"Авторизация\",\"Важно, и я уверен(a)\",\"Средне, но есть сомнения\"\n"
-                "\"Резервное копирование\",\"Очень важно, но есть сомнения\",\"Маловажно, и я уверен(a)\""
+                "• Маловажно, и я уверен(a) "
+                "• Неважно, но я уверен(a)\n"
+                "• Неважно, и есть сомнения\n"
             ),
-            width=380,
-            font=("Segoe UI", 8),
+            width=500,
+            font=("Segoe UI", 9),
             justify="left"
         )
-
         msg2.pack(pady=(0, 5))
+        ttk.Button(right, text="📁 Загрузить данные", command=self.load_intuitionistic_file).pack(pady=5)
+
         msg_ifs_scale = tk.Message(
             right,
             text=(
-                "ФОРМАТ ФАЙЛА ШКАЛЫ ДЛЯ INTUITIONISTIC FUZZY TOPSIS (CSV):\n\n"
-                "Обязательные столбцы (точное соответствие названий):\n"
+                "ФОРМАТ ФАЙЛА СООТВЕТСТВИЙ (CSV)\n\n"
+                "Обязательные столбцы:\n"
                 "1. \"Оценка эксперта\" - текстовая оценка\n"
                 "2. \"Степень принадлежности\" - число 0.0-1.0\n"
                 "3. \"Степень непринадлежности\" - число 0.0-1.0\n"
                 "4. \"Степень неопределённости\" - число 0.0-1.0\n\n"
-                "Допустимые текстовые оценки перечислены выше в необходимом порядке"
                 "ТРЕБОВАНИЯ:\n"
-                "1. Все значения в кавычках "
-                "2. Разделитель - запятая "
-                "3. Первая строка - заголовки столбцов "
-                "4. Сумма (μ + ν + π) ≤ 1.0 для каждой строки\n"
-                "ПРИМЕР СОДЕРЖИМОГО ФАЙЛА ШКАЛЫ:\n"
-                "\"Оценка эксперта\",\"Степ.принадлеж.\",\"Степ.непринадл.\",\"Степ.неопред.\"\n"
-                "\"Очень важно, и я уверен(a)\",\"0.9\",\"0.05\",\"0.05\"\n"
+                "Все значения в кавычках, разделитель - запятая\n"
+                "Первая строка - заголовки столбцов, Сумма (μ + ν + π) ≤ 1.0 для каждой строки\n"
             ),
-            width=380,
-            font=("Segoe UI", 8),
+            width=500,
+            font=("Segoe UI", 9),
             justify="left"
         )
-        msg_ifs_scale.pack(pady=(10, 5))
-        ttk.Button(right, text="📁 Загрузить файл Intuitionistic", command=self.load_intuitionistic_file).pack(pady=5)
-        # Кнопка загрузки шкалы
-        ttk.Button(left, text="📁 Загрузить шкалу значений", command=self.load_fuzzy_scale_file).pack(pady=(10, 5))
-        ttk.Button(right, text="📁 Загрузить шкалу IFS", command=self.load_ifs_scale_file).pack(pady=(10, 5))
-        # Кнопки запуска и возврата
+        msg_ifs_scale.pack(pady=(5, 5))
+        ttk.Button(right, text="📁 Загрузить данные", command=self.load_ifs_scale_file).pack(pady=5)
+        ttk.Button(right, text="✅ Сформировать отчет 2", command=self.run_fuzzy_topsis_type2).pack(pady=(10, 0))
 
+        # Фрейм для кнопок внизу
+        bottom_frame = ttk.Frame(frame)
+        bottom_frame.pack(fill="x", pady=(15, 0))
+        center_frame = ttk.Frame(bottom_frame)
+        center_frame.pack(side="left", padx=(20, 0))
+
+        # Кнопка "Сформировать комбинированный отчет" по центру
+        ttk.Button(
+            center_frame,
+            text="✅ Сформировать комбинированный отчет",
+            command=self.run_fuzzy_topsis_combined,
+            style="TButton"
+        ).pack(side="left", expand=True, padx=5, pady=5)
+
+        # Кнопка "Назад" справа
+        ttk.Button(
+            bottom_frame,
+            text="🔙 Вернуться назад",
+            command=self.show_method_selection_screen,
+            style="Exit.TButton"
+        ).pack(side="right", padx=5, pady=5)
+
+        # Статус
         self.status = ttk.Label(frame, text="", style="Status.TLabel")
-        self.status.pack()
+        self.status.pack(pady=(10, 0))
 
-        ttk.Button(frame, text="✅ Сформировать отчёт", command=self.run_fuzzy_topsis).pack(pady=(15, 5))
-        ttk.Button(frame, text="🔙 Назад", command=self.show_method_selection_screen).pack(pady=(0, 10))
+    def run_fuzzy_topsis_type1(self):
+        if not self.fuzzy_type1_path or not hasattr(self, 'fuzzy_scale_path'):
+            messagebox.showwarning("⚠️ Внимание", "Загрузите оба файла для Fuzzy TOPSIS Type-1")
+            return
 
+        try:
+            from prioritization_tool.logic.fuzzy_topsis import calculate_fuzzy_topsis
+            from prioritization_tool.logic.fuzzy_topsis_report import generate_single_report
 
+            results = calculate_fuzzy_topsis(self.fuzzy_type1_path, self.fuzzy_scale_path)
+            generate_single_report(results, "Fuzzy TOPSIS Type-1", "output/fuzzy_topsis_type1_report.pdf")
+            self.status.config(text="📄 Отчет сохранен: output/fuzzy_topsis_type1_report.pdf")
+        except Exception as e:
+            messagebox.showerror("Ошибка", f"Ошибка обработки: {str(e)}")
+
+    def run_fuzzy_topsis_type2(self):
+        if not self.topsis_intuitionistic_path or not hasattr(self, 'ifs_scale_path'):
+            messagebox.showwarning("⚠️ Внимание", "Загрузите оба файла для Intuitionistic Fuzzy TOPSIS")
+            return
+
+        try:
+            from prioritization_tool.logic.intuitionistic_topsis import calculate_ifs_topsis
+            from prioritization_tool.logic.fuzzy_topsis_report import generate_single_report
+
+            results = calculate_ifs_topsis(self.topsis_intuitionistic_path, self.ifs_scale_path)
+            generate_single_report(results, "Intuitionistic Fuzzy TOPSIS", "output/fuzzy_topsis_type2_report.pdf")
+            self.status.config(text="📄 Отчет сохранен: output/fuzzy_topsis_type2_report.pdf")
+        except Exception as e:
+            messagebox.showerror("Ошибка", f"Ошибка обработки: {str(e)}")
+
+    def run_fuzzy_topsis_combined(self):
+        if not all([hasattr(self, 'fuzzy_type1_path'),
+                    hasattr(self, 'fuzzy_scale_path'),
+                    hasattr(self, 'topsis_intuitionistic_path'),
+                    hasattr(self, 'ifs_scale_path')]):
+            messagebox.showwarning("⚠️ Внимание", "Загрузите все файлы для формирования комбинированного отчета")
+            return
+
+        try:
+            from prioritization_tool.logic.fuzzy_topsis import calculate_fuzzy_topsis
+            from prioritization_tool.logic.intuitionistic_topsis import calculate_ifs_topsis
+            from prioritization_tool.logic.fuzzy_topsis_report import generate_combined_report
+
+            results_type1 = calculate_fuzzy_topsis(self.fuzzy_type1_path, self.fuzzy_scale_path)
+            results_type2 = calculate_ifs_topsis(self.topsis_intuitionistic_path, self.ifs_scale_path)
+
+            generate_combined_report(results_type1, results_type2)
+            self.status.config(text="📄 Комбинированный отчет сохранен: output/fuzzy_topsis_report.pdf")
+        except Exception as e:
+            messagebox.showerror("Ошибка", f"Ошибка обработки: {str(e)}")
 
     def load_fuzzy_type1_file(self):
         path = filedialog.askopenfilename(
@@ -455,7 +566,7 @@ class PrioritizationTool:
         )
         if path:
             self.fuzzy_type1_path = path
-            self.status.config(text="✅ Загружен файл Type-1: " + os.path.basename(path))
+            self.status.config(text="✅ Файл требований 1 загружен.")
 
     def load_ifs_scale_file(self):
         path = filedialog.askopenfilename(
@@ -464,7 +575,7 @@ class PrioritizationTool:
         )
         if path:
             self.ifs_scale_path = path
-            self.status.config(text="✅ Загружена шкала IFS: " + os.path.basename(path))
+            self.status.config(text="✅ Файл соответствий 2 загружен.")
 
     def load_intuitionistic_file(self):
         path = filedialog.askopenfilename(
@@ -473,7 +584,7 @@ class PrioritizationTool:
         )
         if path:
             self.topsis_intuitionistic_path = path
-            self.status.config(text="✅ Загружен файл Intuitionistic: " + os.path.basename(path))
+            self.status.config(text="✅ Файл требований 2 загружен.")
     def load_fuzzy_scale_file(self):
         path = filedialog.askopenfilename(
             title="Загрузите файл шкалы значений для Fuzzy TOPSIS",
@@ -481,7 +592,7 @@ class PrioritizationTool:
         )
         if path:
             self.fuzzy_scale_path = path
-            self.status.config(text="✅ Загружена шкала значений: " + os.path.basename(path))
+            self.status.config(text="✅ Файл соответствий 1 загружен.")
 
     def run_fuzzy_topsis(self):
         if not self.fuzzy_type1_path or not hasattr(self, 'fuzzy_scale_path'):
@@ -509,7 +620,6 @@ class PrioritizationTool:
         except Exception as e:
             messagebox.showerror("Ошибка", f"Ошибка обработки: {str(e)}")
 
-
     def show_fuzzy_delphi_screen(self):
         self.clear_window()
         frame = ttk.Frame(self.root, padding=20)
@@ -524,93 +634,152 @@ class PrioritizationTool:
         left = ttk.Frame(container, padding=10)
         left.pack(side="left", fill="both", expand=True)
 
-        ttk.Label(left, text="Fuzzy Delphi Type-2 (IT2FS)", style="SubHeader.TLabel").pack(pady=(0, 5))
+        ttk.Label(left, text="Fuzzy Delphi Type-2", style="SubHeader.TLabel").pack(pady=(0, 5))
 
         msg1 = tk.Message(
             left,
-            text=("Файл требований (CSV): должен содержать словесные оценки с указанием степени уверенности:\n"
-        "  - Альтернатива\n"
-        "  - Эксперт\n"
-        "  - Один или несколько критериев (например: Безопасность, Удобство)\n"
-        "  - Вес эксперта\n\n"
-        "Первая строка в каждом файле — названия столбцов в кавычках, разделитель — запятая.\n"
-        "Значение, соответствующее каждому столбцу, должно быть заключено в кавычки.\n"
-        "Оценки должны быть в формате: \"Степень уверенности – Лингвистическая оценка\"\n"
-        "Например: \"Высокая уверенность – Высокая\"\n\n"
-        "Пример строки:\n"
-        "\"Авторизация через соцсети\",\"Эксперт 1\",\"Высокая уверенность – Высокая\",\"Средняя уверенность – Средняя\",\"Низкая уверенность – Низкая\",\"0.6\""
-     ),
+            text=(
+                "ФОРМАТ ФАЙЛА ТРЕБОВАНИЙ (CSV)\n\n"
+                "Обязательные столбцы:\n"
+                "• Альтернатива\n"
+                "• Эксперт\n"
+                "• Вес эксперта\n"
+                "• Критерии оценки (один или несколько)\n\n"
+                "Оценки должны быть в формате:\n"
+                "\"Степень уверенности – Лингвистическая оценка\"\n"
+                "Пример: \"Высокая уверенность – Высокая\"\n\n"
+                "Допустимые оценки:\n"
+                "• Степень уверенности: Очень высокая, Высокая, Средняя, Низкая\n"
+                "• Лингвистические оценки: Очень низкая, Низкая, Средняя, Высокая, Очень высокая\n"
+            ),
             width=380,
+            font=("Segoe UI", 9),
             justify="left"
         )
         msg1.pack(pady=(0, 5))
-        ttk.Button(left, text="📁 Загрузить файл Type-2", command=self.load_fuzzy_delphi_file).pack(pady=5)
+        ttk.Button(left, text="📁 Загрузить данные", command=self.load_fuzzy_delphi_file, style="Small.TButton").pack(
+            pady=5)
+        ttk.Button(left, text="✅ Сформировать отчет 1", command=self.run_fuzzy_delphi_type2).pack(pady=(10, 0))
 
         # Правая колонка — Delphi Intuitionistic
         right = ttk.Frame(container, padding=10)
         right.pack(side="left", fill="both", expand=True)
 
-        ttk.Label(right, text="Delphi Intuitionistic (IFS)", style="SubHeader.TLabel").pack(pady=(0, 5))
+        ttk.Label(right, text="Intuitionistic Delphi", style="SubHeader.TLabel").pack(pady=(0, 5))
 
         msg2 = tk.Message(
             right,
             text=(
-                "Файл требований (CSV): должен содержать оценки по критериям в виде троек (μ, ν, π):\n"
-        "  - Альтернатива\n"
-        "  - Эксперт\n"
-        "  - Один или несколько критериев (например: Безопасность, Удобство)\n"
-        "  - Вес эксперта\n\n"
-        "Первая строка в каждом файле — названия столбцов в кавычках, разделитель — запятая.\n"
-        "Значение, соответствующее каждому столбцу, должно быть заключено в кавычки.\n"
-        "Оценки должны быть в формате: \"(μ, ν, π)\", где каждое значение от 0 до 1.\n"
-        "Например: \"(0.7, 0.2, 0.1)\"\n\n"
-        "Пример строки:\n"
-        "\"Авторизация через соцсети\",\"Эксперт 1\",\"(0.7, 0.2, 0.1)\",\"(0.6, 0.3, 0.1)\",\"(0.5, 0.4, 0.1)\",\"0.6\""
-    ),
+                "ФОРМАТ ФАЙЛА ТРЕБОВАНИЙ (CSV)\n\n"
+                "Обязательные столбцы:\n"
+                "• Альтернатива\n"
+                "• Эксперт\n"
+                "• Вес эксперта\n"
+                "• Критерии оценки (один или несколько)\n\n"
+                "Оценки должны быть в формате:\n"
+                "\"(μ, ν, π)\" где:\n"
+                "• μ - степень принадлежности (0-1)\n"
+                "• ν - степень непринадлежности (0-1)\n"
+                "• π - степень неопределенности (0-1)\n\n"
+                "Пример: \"(0.7, 0.2, 0.1)\"\n"
+                "Сумма (μ + ν + π) должна быть ≤ 1.0\n"
+            ),
             width=380,
+            font=("Segoe UI", 9),
             justify="left"
         )
         msg2.pack(pady=(0, 5))
-        ttk.Button(right, text="📁 Загрузить файл IFS", command=self.load_delphi_ifs_file).pack(pady=5)
+        ttk.Button(right, text="📁 Загрузить данные", command=self.load_delphi_ifs_file, style="Small.TButton").pack(
+            pady=5)
+        ttk.Button(right, text="✅ Сформировать отчет 2", command=self.run_fuzzy_delphi_ifs).pack(pady=(10, 0))
 
-        # Кнопки запуска и возврата
-        ttk.Button(frame, text="✅ Сформировать отчёт", command=self.run_fuzzy_delphi).pack(pady=(15, 5))
-        ttk.Button(frame, text="🔙 Назад", command=self.show_method_selection_screen).pack(pady=(0, 10))
+        # Фрейм для кнопок внизу
+        bottom_frame = ttk.Frame(frame)
+        bottom_frame.pack(fill="x", pady=(15, 0))
+        center_frame = ttk.Frame(bottom_frame)
+        center_frame.pack(side="left", padx=(20, 0))
 
+        # Кнопка "Сформировать комбинированный отчет" по центру
+        ttk.Button(
+            center_frame,
+            text="✅ Сформировать комбинированный отчет",
+            command=self.run_fuzzy_delphi_combined,
+            style="TButton"
+        ).pack(side="left", expand=True, padx=5, pady=5)
+
+        # Кнопка "Назад" справа
+        ttk.Button(
+            bottom_frame,
+            text="🔙 Вернуться назад",
+            command=self.show_method_selection_screen,
+            style="Exit.TButton"
+        ).pack(side="right", padx=5, pady=5)
+
+        # Статус
         self.status = ttk.Label(frame, text="", style="Status.TLabel")
-        self.status.pack()
+        self.status.pack(pady=(10, 0))
+
 
     def load_fuzzy_delphi_file(self):
         path = filedialog.askopenfilename(title="Загрузите файл Fuzzy Delphi Type-2",
                                           filetypes=[("CSV файлы", "*.csv")])
         if path:
             self.fuzzy_delphi_path = path
-            self.status.config(text="✅ Загружен файл Type-2: " + os.path.basename(path))
+            self.status.config(text="✅ Файл требований 1 загружен.")
 
     def load_delphi_ifs_file(self):
         path = filedialog.askopenfilename(title="Загрузите файл Delphi Intuitionistic",
                                           filetypes=[("CSV файлы", "*.csv")])
         if path:
             self.delphi_ifs_path = path
-            self.status.config(text="✅ Загружен файл IFS: " + os.path.basename(path))
+            self.status.config(text="✅ Файл требований 2 загружен.")
 
-    def run_fuzzy_delphi(self):
-        if not self.fuzzy_delphi_path or not self.delphi_ifs_path:
-            messagebox.showwarning("⚠️ Внимание", "Загрузите оба CSV-файла перед запуском анализа.")
+    def run_fuzzy_delphi_type2(self):
+        if not self.fuzzy_delphi_path:
+            messagebox.showwarning("⚠️ Внимание", "Загрузите файл для Fuzzy Delphi Type-2")
             return
 
         try:
-            from logic import fuzzy_delphi, delphi_report
+            from prioritization_tool.logic.fuzzy_delphi import process_fuzzy_delphi
+            from prioritization_tool.logic.delphi_report import generate_single_report
 
-            results_type2 = fuzzy_delphi.process_fuzzy_delphi(self.fuzzy_delphi_path)
-            results_ifs = fuzzy_delphi.process_delphi_ifs(self.delphi_ifs_path)
-
-            delphi_report.generate_combined_report(results_type2, results_ifs)
-            self.status.config(text="📄 Объединённый отчет создан: output/fuzzy_delphi_report.pdf")
-
+            results = process_fuzzy_delphi(self.fuzzy_delphi_path)
+            generate_single_report(results, "Fuzzy Delphi Type-2", "output/delphi_type2_report.pdf")
+            self.status.config(text="📄 Отчет сохранен: output/delphi_type2_report.pdf")
         except Exception as e:
-            messagebox.showerror("Ошибка", str(e))
+            messagebox.showerror("Ошибка", f"Ошибка обработки: {str(e)}")
 
+    def run_fuzzy_delphi_ifs(self):
+        if not self.delphi_ifs_path:
+            messagebox.showwarning("⚠️ Внимание", "Загрузите файл для Delphi Intuitionistic")
+            return
+
+        try:
+            from prioritization_tool.logic.fuzzy_delphi import process_delphi_ifs
+            from prioritization_tool.logic.delphi_report import generate_single_report
+
+            results = process_delphi_ifs(self.delphi_ifs_path)
+            generate_single_report(results, "Delphi Intuitionistic", "output/delphi_ifs_report.pdf")
+            self.status.config(text="📄 Отчет сохранен: output/delphi_ifs_report.pdf")
+        except Exception as e:
+            messagebox.showerror("Ошибка", f"Ошибка обработки: {str(e)}")
+
+    def run_fuzzy_delphi_combined(self):
+        if not self.fuzzy_delphi_path or not self.delphi_ifs_path:
+            messagebox.showwarning("⚠️ Внимание", "Загрузите оба файла для формирования комбинированного отчета")
+            return
+
+        try:
+            from prioritization_tool.logic.fuzzy_delphi import process_fuzzy_delphi, process_delphi_ifs
+            from prioritization_tool.logic.delphi_report import generate_combined_report
+
+            results_type2 = process_fuzzy_delphi(self.fuzzy_delphi_path)
+            results_ifs = process_delphi_ifs(self.delphi_ifs_path)
+
+            generate_combined_report(results_type2, results_ifs)
+            self.status.config(text="📄 Комбинированный отчет сохранен: output/fuzzy_delphi_report.pdf")
+        except Exception as e:
+            messagebox.showerror("Ошибка", f"Ошибка обработки: {str(e)}")
 
     def show_fuzzy_ahp_screen(self):
         self.clear_window()
@@ -628,32 +797,60 @@ class PrioritizationTool:
 
         ttk.Label(left, text="Fuzzy AHP Type-1", style="SubHeader.TLabel").pack(pady=(0, 5))
 
-        msg1 = tk.Message(
+        # Описание для критериев
+        msg_criteria = tk.Message(
             left,
             text=(
-
-        "Требования должны быть представлены в виде трёх отдельных CSV-файлов:\n"
-        "1. Оценки попарных сравнений критериев:\n"
-        "  - Первая строка — названия критериев (заголовки)\n"
-        "  - Каждая последующая строка — оценки сравнений одного критерия с остальными\n"
-        "  - Значения — в формате \"3\" или \"1/3\" из шкалы \"1\", \"2\", \"3\", \"5\", \"7\", \"9\", \"1/2\", \"1/3\", \"1/5\", \"1/7\", \"1/9\"\n"
-        "2. Оценки альтернатив по критериям:\n"
-        "  - Столбцы: Альтернатива, Эксперт, Критерий 1, Критерий 2, ...\n"
-        "  - Значения — тройки вида (a, b, c), например: \"(1.5, 2.0, 2.5)\"\n"
-        "3. Весовые коэффициенты экспертов:\n"
-        "  - Два столбца: Эксперт, Вес\n"
-        "  - Вес — число от 0 до 1, сумма всех весов должна равняться 1.0\n"
-        "Первая строка в каждом файле — названия столбцов в кавычках, разделитель — запятая. Значение, соответствующее каждому столбцу, должно быть заключено в кавычки."
-
+                "ФОРМАТ ФАЙЛА КРИТЕРИЕВ (CSV)\n\n"
+                "• Матрица попарных сравнений критериев\n"
+                "• Значения: \"1\", \"2\", ..., \"9\" или \"1/2\", \"1/3\", ..., \"1/9\""
             ),
-            width=420,
+            width=380,
+            font=("Segoe UI", 10),
             justify="left"
         )
-        msg1.pack(pady=(0, 5))
+        msg_criteria.pack(pady=(0, 5))
 
-        ttk.Button(left, text="📁 Загрузить критерии", command=self.load_fuzzy_ahp_criteria_file).pack(pady=3)
-        ttk.Button(left, text="📁 Загрузить альтернативы", command=self.load_fuzzy_ahp_alternatives_file).pack(pady=3)
-        ttk.Button(left, text="📁 Загрузить веса экспертов", command=self.load_fuzzy_ahp_weights_file).pack(pady=3)
+        ttk.Button(left, text="📁 Загрузить данные 1", command=self.load_fuzzy_ahp_criteria_file,
+                   style="Small.TButton").pack(pady=(0, 10))
+
+        # Описание для альтернатив
+        msg_alternatives = tk.Message(
+            left,
+            text=(
+                "ФОРМАТ ФАЙЛА АЛЬТЕРНАТИВ (CSV)\n\n"
+                "• Оценки альтернатив по критериям\n"
+                "• Формат значений: \"(a, b, c)\" (тройки чисел)"
+            ),
+            width=380,
+            font=("Segoe UI", 10),
+            justify="left"
+        )
+        msg_alternatives.pack(pady=(0, 5))
+
+        ttk.Button(left, text="📁 Загрузить данные 2", command=self.load_fuzzy_ahp_alternatives_file,
+                   style="Small.TButton").pack(pady=(0, 10))
+
+        # Описание для весов экспертов
+        msg_weights = tk.Message(
+            left,
+            text=(
+                "ФОРМАТ ФАЙЛА ВЕСОВ ЭКСПЕРТОВ (CSV)\n\n"
+                "• Столбцы: Эксперт, Вес\n"
+                "• Сумма весов должна быть равна 1.0"
+            ),
+            width=380,
+            font=("Segoe UI", 10),
+            justify="left"
+        )
+        msg_weights.pack(pady=(0, 5))
+
+        ttk.Button(left, text="📁 Загрузить данные 3", command=self.load_fuzzy_ahp_weights_file,
+                   style="Small.TButton").pack(pady=(0, 10))
+
+        # Кнопка формирования отчета Type-1
+        ttk.Button(left, text="✅ Сформировать отчет 1", command=self.run_fuzzy_ahp_type1, style="TButton").pack(
+            pady=(10, 0))
 
         # Правая колонка — Fuzzy AHP Type-2
         right = ttk.Frame(container, padding=10)
@@ -664,26 +861,50 @@ class PrioritizationTool:
         msg2 = tk.Message(
             right,
             text=(
-        "Файл требований (CSV): должен содержать оценки попарных сравнений критериев от нескольких экспертов:\n"
-        "  - Столбцы: Эксперт, Вес, Критерий 1 > Критерий 2, Критерий 1 > Критерий 3, ...\n"
-        "  - Значения — словесные оценки предпочтения: \"Одинаково\", \"Слабо\", \"Умеренно\", \"Сильно\", \"Абсолютно\"\n"
-        "  - Все значения должны быть заключены в кавычки\n\n"
-        "Пример строки:\n"
-        "  \"Эксперт 1\",\"0.3\",\"Слабо\",\"Одинаково\",\"Сильно\",... \n"
-    ),
+                "ФОРМАТ ФАЙЛА КРИТЕРИЕВ (CSV)\n\n"
+                "• Оценки попарных сравнений от экспертов\n"
+                "• Столбцы: Эксперт, Вес, Критерий1>Критерий2, ...\n"
+                "• Лингвистические оценки:\n"
+                "  \"Одинаково\", \"Слабо\", \"Умеренно\",\n"
+                "  \"Сильно\", \"Абсолютно\"\n\n"
+                "Пример:\n"
+                "\"Эксперт1\",\"0.3\",\"Слабо\",\"Умеренно\",..."
+            ),
             width=380,
+            font=("Segoe UI", 9),
             justify="left"
         )
         msg2.pack(pady=(0, 5))
+        ttk.Button(right, text="📁 Загрузить данные", command=self.load_fuzzy_ahp_type2_file,
+                   style="Small.TButton").pack(pady=5)
+        ttk.Button(right, text="✅ Сформировать отчет 2", command=self.run_fuzzy_ahp_type2, style="TButton").pack(
+            pady=(10, 0))
 
-        ttk.Button(right, text="📁 Загрузить файл Type-2", command=self.load_fuzzy_ahp_type2_file).pack(pady=5)
+        # Фрейм для кнопок внизу
+        bottom_frame = ttk.Frame(frame)
+        bottom_frame.pack(fill="x", pady=(15, 0))
+        center_frame = ttk.Frame(bottom_frame)
+        center_frame.pack(side="left", padx=(20, 0))
 
-        # Кнопки запуска и возврата
-        ttk.Button(frame, text="✅ Сформировать отчёт", command=self.run_fuzzy_ahp).pack(pady=(15, 5))
-        ttk.Button(frame, text="🔙 Назад", command=self.show_method_selection_screen).pack(pady=(0, 10))
+        # Кнопка "Сформировать комбинированный отчет" по центру
+        ttk.Button(
+            center_frame,
+            text="✅ Сформировать комбинированный отчет",
+            command=self.run_fuzzy_ahp_combined,
+            style="TButton"
+        ).pack(side="left", expand=True, padx=5, pady=5)
 
+        # Кнопка "Назад" справа
+        ttk.Button(
+            bottom_frame,
+            text="🔙 Вернуться назад",
+            command=self.show_method_selection_screen,
+            style="Exit.TButton"
+        ).pack(side="right", padx=5, pady=5)
+
+        # Статус
         self.status = ttk.Label(frame, text="", style="Status.TLabel")
-        self.status.pack()
+        self.status.pack(pady=(10, 0))
 
     def load_fuzzy_ahp_criteria_file(self):
         path = filedialog.askopenfilename(
@@ -691,54 +912,92 @@ class PrioritizationTool:
             filetypes=[("CSV файлы", "*.csv")])
         if path:
             self.ahp_type1_criteria_path = path
-            self.status.config(text="✅ Загружен файл критериев: " + os.path.basename(path))
+            self.status.config(text="✅ Файл критериев 1 загружен.")
 
     def load_fuzzy_ahp_alternatives_file(self):
         path = filedialog.askopenfilename(title="Загрузите файл с оценками альтернатив (Fuzzy AHP Type-1)",
                                           filetypes=[("CSV файлы", "*.csv")])
         if path:
             self.ahp_type1_alternatives_path = path
-            self.status.config(text="✅ Загружен файл альтернатив: " + os.path.basename(path))
+            self.status.config(text="✅ Файл альтернатив загружен.")
 
     def load_fuzzy_ahp_weights_file(self):
         path = filedialog.askopenfilename(title="Загрузите файл с весами экспертов (Fuzzy AHP Type-1)",
                                           filetypes=[("CSV файлы", "*.csv")])
         if path:
             self.ahp_type1_weights_path = path
-            self.status.config(text="✅ Загружен файл весов: " + os.path.basename(path))
+            self.status.config(text="✅ Файл весов загружен.")
 
     def load_fuzzy_ahp_type2_file(self):
         path = filedialog.askopenfilename(title="Загрузите файл попарных сравнений экспертов (Fuzzy AHP Type-2)",
                                           filetypes=[("CSV файлы", "*.csv")])
         if path:
             self.ahp_type2_path = path
-            self.status.config(text="✅ Загружен файл Type-2: " + os.path.basename(path))
+            self.status.config(text="✅ Файл критериев 2 загружен.")
 
-    def run_fuzzy_ahp(self):
-        if not self.ahp_type1_criteria_path or not self.ahp_type1_alternatives_path or not self.ahp_type1_weights_path or not self.ahp_type2_path:
-            messagebox.showwarning("⚠️ Внимание", "Загрузите все четыре файла: три для Type-1 и один для Type-2.")
+    def run_fuzzy_ahp_type1(self):
+        try:
+            from prioritization_tool.logic.fuzzy_ahp import process_fuzzy_ahp_type1
+            from prioritization_tool.logic.fuzzy_ahp_report import generate_single_report
+
+            if not all([self.ahp_type1_criteria_path,
+                        self.ahp_type1_alternatives_path,
+                        self.ahp_type1_weights_path]):
+                raise ValueError("Не все файлы загружены")
+
+            results = process_fuzzy_ahp_type1(
+                self.ahp_type1_criteria_path,
+                self.ahp_type1_alternatives_path,
+                self.ahp_type1_weights_path
+            )
+
+            generate_single_report(results, "Fuzzy AHP Type-1", "output/fuzzy_ahp_type1_report.pdf")
+            self.status.config(text="📄 Отчет сохранен: output/fuzzy_ahp_type1_report.pdf")
+
+        except Exception as e:
+            error_msg = f"Ошибка: {str(e)}\nПроверьте:\n1. Формат файлов\n2. Заполнение данных"
+            messagebox.showerror("Ошибка обработки", error_msg)
+            self.status.config(text="❌ Ошибка при генерации отчета")
+
+
+    def run_fuzzy_ahp_type2(self):
+        if not self.ahp_type2_path:
+            messagebox.showwarning("⚠️ Внимание", "Загрузите файл для Fuzzy AHP Type-2")
             return
 
         try:
-            from logic import fuzzy_ahp, fuzzy_ahp_report
+            from prioritization_tool.logic.fuzzy_ahp import process_fuzzy_ahp_type2
+            from prioritization_tool.logic.fuzzy_ahp_report import generate_single_report
 
-            # Передаём все три пути для Type-1
-            results_type1 = fuzzy_ahp.process_fuzzy_ahp_type1(
-                criteria_path=self.ahp_type1_criteria_path,
-                alternatives_path=self.ahp_type1_alternatives_path,
-                weights_path=self.ahp_type1_weights_path
-            )
-
-            # Один путь для Type-2
-            results_type2 = fuzzy_ahp.process_fuzzy_ahp_type2(self.ahp_type2_path)
-
-            # Генерируем единый отчёт
-            fuzzy_ahp_report.generate_report(results_type1, results_type2)
-
-            self.status.config(text="📄 Объединённый отчет создан: output/fuzzy_ahp_report.pdf")
-
+            results = process_fuzzy_ahp_type2(self.ahp_type2_path)
+            generate_single_report(results, "Fuzzy AHP Type-2", "output/fuzzy_ahp_type2_report.pdf")
+            self.status.config(text="📄 Отчет сохранен: output/fuzzy_ahp_type2_report.pdf")
         except Exception as e:
-            messagebox.showerror("Ошибка", str(e))
+            messagebox.showerror("Ошибка", f"Ошибка обработки: {str(e)}")
+
+    def run_fuzzy_ahp_combined(self):
+        if not all([self.ahp_type1_criteria_path,
+                    self.ahp_type1_alternatives_path,
+                    self.ahp_type1_weights_path,
+                    self.ahp_type2_path]):
+            messagebox.showwarning("⚠️ Внимание", "Загрузите все файлы для формирования комбинированного отчета")
+            return
+
+        try:
+            from prioritization_tool.logic.fuzzy_ahp import process_fuzzy_ahp_type1, process_fuzzy_ahp_type2
+            from prioritization_tool.logic.fuzzy_ahp_report import generate_combined_report
+
+            results_type1 = process_fuzzy_ahp_type1(
+                self.ahp_type1_criteria_path,
+                self.ahp_type1_alternatives_path,
+                self.ahp_type1_weights_path
+            )
+            results_type2 = process_fuzzy_ahp_type2(self.ahp_type2_path)
+
+            generate_combined_report(results_type1, results_type2)
+            self.status.config(text="📄 Комбинированный отчет сохранен: output/fuzzy_ahp_report.pdf")
+        except Exception as e:
+            messagebox.showerror("Ошибка", f"Ошибка обработки: {str(e)}")
 
 
 if __name__ == "__main__":

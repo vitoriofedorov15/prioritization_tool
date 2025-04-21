@@ -70,6 +70,40 @@ def generate_bar_chart(results, output_path, title):
     plt.close()
 
 
+def generate_single_report(results, method_name, filename):
+    chart_path = f"output/{method_name.lower().replace(' ', '_')}_chart.png"
+    generate_bar_chart(results, chart_path, method_name)
+
+    def classify(results):
+        sorted_items = sorted(results.items(), key=lambda x: -x[1]["score"])
+        high = [(k, v) for k, v in sorted_items if v["score"] >= 0.7]
+        medium = [(k, v) for k, v in sorted_items if 0.4 <= v["score"] < 0.7]
+        low = [(k, v) for k, v in sorted_items if v["score"] < 0.4]
+        return high, medium, low
+
+    high, med, low = classify(results)
+
+    pdf = UnicodePDF()
+    pdf.add_page()
+
+    pdf.set_font("DejaVu", "B", 14)
+    pdf.multi_cell(0, 10, f"Отчет по приоритизации требований ({method_name})", align='C')
+    pdf.ln(10)
+
+    try:
+        pdf.image(chart_path, x=10, y=pdf.get_y(), w=190)
+        pdf.ln(110 if len(results) <= 20 else 130)
+    except:
+        pdf.multi_cell(0, 6, f"[Диаграмма {method_name} недоступна]")
+        pdf.ln(10)
+
+    write_section(pdf, "Высокий приоритет:", high)
+    write_section(pdf, "Средний приоритет:", med)
+    write_section(pdf, "Низкий приоритет:", low)
+
+    os.makedirs(os.path.dirname(filename), exist_ok=True)
+    pdf.output(filename)
+
 def generate_combined_report(fuzzy_results, ifs_results, filename="output/fuzzy_topsis_report.pdf"):
     chart_fuzzy = "output/fuzzy_chart.png"
     chart_ifs = "output/ifs_chart.png"
