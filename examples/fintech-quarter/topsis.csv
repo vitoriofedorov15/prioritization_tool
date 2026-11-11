@@ -1,0 +1,13 @@
+Альтернатива,Вес стейкхолдера,Conversion benefit,Operations benefit,Risk reduction,Delivery ease
+Document precheck,1,9,8,8,7
+Verification status tracker,1,9,9,6,8
+Manual review triage,1,7,10,9,6
+Duplicate payment guard,1,6,7,10,6
+Retry failed top-ups,1,9,7,5,7
+Guided first transfer,1,8,6,4,8
+Sanctions review queue,1,3,6,10,6
+Address form autofill,1,7,5,3,9
+Support routing,1,6,8,5,8
+Payment error messages,1,8,8,5,9
+Referral prompt,1,8,3,1,9
+Profile themes,1,3,2,1,9

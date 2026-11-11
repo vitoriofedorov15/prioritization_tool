@@ -5,3 +5,4 @@ pandas
 numpy
 fpdf
 python-dotenv
+certifi

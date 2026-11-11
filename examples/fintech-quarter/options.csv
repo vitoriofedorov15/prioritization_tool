@@ -1,0 +1,13 @@
+alternative,conversion_benefit,operations_benefit,risk_reduction,effort_points
+Document precheck,9,8,8,4
+Verification status tracker,9,9,6,3
+Manual review triage,7,10,9,5
+Duplicate payment guard,6,7,10,5
+Retry failed top-ups,9,7,5,4
+Guided first transfer,8,6,4,3
+Sanctions review queue,3,6,10,5
+Address form autofill,7,5,3,2
+Support routing,6,8,5,3
+Payment error messages,8,8,5,2
+Referral prompt,8,3,1,2
+Profile themes,3,2,1,2
