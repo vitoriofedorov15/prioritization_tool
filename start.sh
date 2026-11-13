@@ -1,42 +1,31 @@
-#!/bin/bash
-# Start AI Prioritization Tool (backend + frontend)
-
+#!/usr/bin/env bash
+set -euo pipefail
 ROOT="$(cd "$(dirname "$0")" && pwd)"
-PYTHON="$ROOT/.venv/bin/python3"
-UVICORN="$ROOT/.venv/bin/uvicorn"
-
-# Load .env if present (keeps the key out of version control)
-if [ -f "$ROOT/.env" ]; then
-  export $(grep -v '^#' "$ROOT/.env" | xargs)
+PYTHON="$ROOT/.venv/bin/python"
+if [[ ! -x "$PYTHON" || ! -d "$ROOT/frontend/node_modules" ]]; then
+  echo "Install dependencies first; see README.md Quick start." >&2
+  exit 1
 fi
-
-if [ -z "$GEMINI_API_KEY" ]; then
-  echo "  ⚠️  GEMINI_API_KEY is not set — AI features will be disabled."
-  echo "     Add it to .env (see .env.example) or export it before running:"
-  echo "     export GEMINI_API_KEY=AIzaSy..."
-  echo "     Get a free key: https://aistudio.google.com/app/apikey"
-  echo ""
-fi
-
-# Kill any existing processes on our ports
-lsof -ti:8000 | xargs kill -9 2>/dev/null
-lsof -ti:5173 | xargs kill -9 2>/dev/null
-
-echo "Starting backend on http://localhost:8000 ..."
+for port in 8000 5173; do
+  if lsof -tiTCP:"$port" -sTCP:LISTEN >/dev/null 2>&1; then
+    echo "Port $port is busy. Stop its service or run the servers manually on other ports." >&2
+    exit 1
+  fi
+done
+cleanup() {
+  kill "${BACKEND_PID:-}" "${FRONTEND_PID:-}" 2>/dev/null || true
+}
+trap cleanup EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
 cd "$ROOT/backend"
-"$UVICORN" main:app --host 0.0.0.0 --port 8000 --reload &
+"$PYTHON" -m uvicorn main:app --host 127.0.0.1 --port 8000 --env-file "$ROOT/.env" &
 BACKEND_PID=$!
-
-echo "Starting frontend on http://localhost:5173 ..."
 cd "$ROOT/frontend"
-npm run dev &
+npm run dev -- --host 127.0.0.1 --strictPort &
 FRONTEND_PID=$!
-
-echo ""
-echo "  Backend:  http://localhost:8000  (API docs: http://localhost:8000/docs)"
-echo "  Frontend: http://localhost:5173"
-echo ""
-echo "Press Ctrl+C to stop both servers."
-
-trap "kill $BACKEND_PID $FRONTEND_PID 2>/dev/null; exit" INT TERM
-wait
+echo "Frontend: http://localhost:5173 | API: http://localhost:8000/docs"
+while kill -0 "$BACKEND_PID" 2>/dev/null && kill -0 "$FRONTEND_PID" 2>/dev/null; do
+  sleep 1
+done
+exit 1

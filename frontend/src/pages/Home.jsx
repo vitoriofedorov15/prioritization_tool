@@ -1,4 +1,11 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useApp } from '../context/AppContext'
+import { uploadFiles, analyzeMethod } from '../api'
+import requirements from '../../../examples/fintech-quarter/moscow.csv?raw'
+import baseline from '../../../examples/fintech-quarter/baseline-weights.csv?raw'
+import riskFirst from '../../../examples/fintech-quarter/risk-first-weights.csv?raw'
+import topsis from '../../../examples/fintech-quarter/topsis.csv?raw'
 
 const METHODS = [
   {
@@ -89,6 +96,32 @@ const BADGE_MAP = {
 
 export default function Home() {
   const navigate = useNavigate()
+  const { addSession } = useApp()
+  const [demoBusy, setDemoBusy] = useState(false)
+  const [demoError, setDemoError] = useState('')
+
+  const runDemo = async () => {
+    setDemoBusy(true)
+    setDemoError('')
+    try {
+      for (const [method, title, inputs] of [
+        ['moscow', 'MoSCoW · baseline', {requirements_file: requirements, weights_file: baseline}],
+        ['moscow', 'MoSCoW · risk-first', {requirements_file: requirements, weights_file: riskFirst}],
+        ['topsis', 'TOPSIS · equal criteria', {data_file: topsis}],
+      ]) {
+        const files = Object.fromEntries(Object.entries(inputs).map(([key, text]) =>
+          [key, new File([text], `${key}.csv`, {type: 'text/csv'})]))
+        const { session_id } = await uploadFiles(method, files)
+        const result = await analyzeMethod(method, session_id)
+        addSession({session_id, method, method_name: title, ...result})
+      }
+      navigate('/dashboard')
+    } catch (error) {
+      setDemoError(error.response?.data?.detail || error.message)
+    } finally {
+      setDemoBusy(false)
+    }
+  }
 
   const handleSelect = (methodId) => {
     navigate(`/analysis?method=${methodId}`)
@@ -105,6 +138,15 @@ export default function Home() {
         </p>
       </div>
 
+      <section className="card border border-blue-200 bg-blue-50 p-6 mb-8">
+        <h2 className="text-xl font-bold text-slate-900">Which onboarding improvements should ship next?</h2>
+        <p className="text-slate-600 mt-2 mb-4">Educational case · 12 synthetic options · Product, Operations and Risk.
+          Compare a baseline with increased Risk influence and an equal-criteria TOPSIS reference. No API key required.</p>
+        <button className="btn-primary" onClick={runDemo} disabled={demoBusy}>
+          {demoBusy ? 'Running three analyses…' : 'Run fintech demo →'}
+        </button>
+        {demoError && <p role="alert" className="text-red-700 mt-3">{demoError}</p>}
+      </section>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {METHODS.map((m) => (
           <div

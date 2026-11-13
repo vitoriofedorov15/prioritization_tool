@@ -16,7 +16,7 @@ function buildComparisonData(sessions) {
     const row = { alt }
     sessions.forEach((s) => {
       const score = s.results?.[alt]?.score
-      if (score !== undefined) row[s.method_name || s.method] = score
+      if (score !== undefined) row[s.session_id] = score
     })
     return row
   })
@@ -40,7 +40,6 @@ export default function Dashboard() {
   }
 
   const comparisonData = completedSessions.length >= 2 ? buildComparisonData(completedSessions) : null
-  const sessionKeys = completedSessions.map((s) => s.method_name || s.method)
   const activeSession = selectedId
     ? completedSessions.find((s) => s.session_id === selectedId)
     : completedSessions[completedSessions.length - 1]
@@ -75,9 +74,11 @@ export default function Dashboard() {
           {/* Comparison chart */}
           {comparisonData && (
             <div className="card p-6 mb-6">
-              <h2 className="font-semibold text-slate-700 mb-4">Comparative Analysis Across All Methods</h2>
-              <ResponsiveContainer width="100%" height={320}>
-                <BarChart data={comparisonData} margin={{ top: 5, right: 20, bottom: 60, left: 0 }}>
+              <h2 className="font-semibold text-slate-700 mb-4">Scenario and Method Comparison</h2>
+              <p className="text-sm text-slate-500 mb-4">Synthetic educational data. Compare rank order: MoSCoW scores are relative to the best option;
+                TOPSIS scores measure closeness to an ideal. Score differences across methods are not equivalent.</p>
+              <ResponsiveContainer width="100%" height={400}>
+                <BarChart data={comparisonData} margin={{ top: 5, right: 20, bottom: 110, left: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                   <XAxis
                     dataKey="alt"
@@ -90,11 +91,12 @@ export default function Dashboard() {
                   <Tooltip
                     contentStyle={{ borderRadius: 8, border: '1px solid #e2e8f0', fontSize: 12 }}
                   />
-                  <Legend wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
-                  {sessionKeys.map((key, i) => (
+                  <Legend verticalAlign="top" height={40} wrapperStyle={{ fontSize: 12 }} />
+                  {completedSessions.map((session, i) => (
                     <Bar
-                      key={key}
-                      dataKey={key}
+                      key={session.session_id}
+                      dataKey={session.session_id}
+                      name={session.method_name || session.method}
                       fill={METHOD_COLORS[i % METHOD_COLORS.length]}
                       radius={[4, 4, 0, 0]}
                     />

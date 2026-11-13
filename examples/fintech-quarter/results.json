@@ -1,0 +1,189 @@
+[
+  {
+    "method": "moscow",
+    "method_name": "MoSCoW · baseline",
+    "results": {
+      "Document precheck": {
+        "score": 97.5,
+        "comment": "Высокий приоритет — реализовать в первую очередь"
+      },
+      "Verification status tracker": {
+        "score": 100.0,
+        "comment": "Высокий приоритет — реализовать в первую очередь"
+      },
+      "Manual review triage": {
+        "score": 94.7,
+        "comment": "Высокий приоритет — реализовать в первую очередь"
+      },
+      "Duplicate payment guard": {
+        "score": 85.3,
+        "comment": "Высокий приоритет — реализовать в первую очередь"
+      },
+      "Retry failed top-ups": {
+        "score": 88.1,
+        "comment": "Высокий приоритет — реализовать в первую очередь"
+      },
+      "Guided first transfer": {
+        "score": 84.0,
+        "comment": "Высокий приоритет — реализовать в первую очередь"
+      },
+      "Sanctions review queue": {
+        "score": 72.9,
+        "comment": "Средний приоритет — желательно реализовать"
+      },
+      "Address form autofill": {
+        "score": 79.9,
+        "comment": "Средний приоритет — желательно реализовать"
+      },
+      "Support routing": {
+        "score": 85.4,
+        "comment": "Высокий приоритет — реализовать в первую очередь"
+      },
+      "Payment error messages": {
+        "score": 95.9,
+        "comment": "Высокий приоритет — реализовать в первую очередь"
+      },
+      "Referral prompt": {
+        "score": 73.2,
+        "comment": "Средний приоритет — желательно реализовать"
+      },
+      "Profile themes": {
+        "score": 54.3,
+        "comment": "Средний приоритет — желательно реализовать"
+      }
+    },
+    "conflicts": [
+      {
+        "alternative": "Referral prompt",
+        "type": "hard",
+        "description": "Жёсткий конфликт: одни стейкхолдеры считают 'Referral prompt' обязательным (Must), другие — ненужным (Won't)"
+      },
+      {
+        "alternative": "Profile themes",
+        "type": "hard",
+        "description": "Жёсткий конфликт: одни стейкхолдеры считают 'Profile themes' обязательным (Must), другие — ненужным (Won't)"
+      }
+    ]
+  },
+  {
+    "method": "moscow",
+    "method_name": "MoSCoW · risk-first",
+    "results": {
+      "Document precheck": {
+        "score": 100.0,
+        "comment": "Высокий приоритет — реализовать в первую очередь"
+      },
+      "Verification status tracker": {
+        "score": 98.6,
+        "comment": "Высокий приоритет — реализовать в первую очередь"
+      },
+      "Manual review triage": {
+        "score": 99.7,
+        "comment": "Высокий приоритет — реализовать в первую очередь"
+      },
+      "Duplicate payment guard": {
+        "score": 94.6,
+        "comment": "Высокий приоритет — реализовать в первую очередь"
+      },
+      "Retry failed top-ups": {
+        "score": 85.8,
+        "comment": "Высокий приоритет — реализовать в первую очередь"
+      },
+      "Guided first transfer": {
+        "score": 81.6,
+        "comment": "Высокий приоритет — реализовать в первую очередь"
+      },
+      "Sanctions review queue": {
+        "score": 85.6,
+        "comment": "Высокий приоритет — реализовать в первую очередь"
+      },
+      "Address form autofill": {
+        "score": 77.3,
+        "comment": "Средний приоритет — желательно реализовать"
+      },
+      "Support routing": {
+        "score": 85.6,
+        "comment": "Высокий приоритет — реализовать в первую очередь"
+      },
+      "Payment error messages": {
+        "score": 94.3,
+        "comment": "Высокий приоритет — реализовать в первую очередь"
+      },
+      "Referral prompt": {
+        "score": 67.1,
+        "comment": "Средний приоритет — желательно реализовать"
+      },
+      "Profile themes": {
+        "score": 53.5,
+        "comment": "Средний приоритет — желательно реализовать"
+      }
+    },
+    "conflicts": [
+      {
+        "alternative": "Referral prompt",
+        "type": "hard",
+        "description": "Жёсткий конфликт: одни стейкхолдеры считают 'Referral prompt' обязательным (Must), другие — ненужным (Won't)"
+      },
+      {
+        "alternative": "Profile themes",
+        "type": "hard",
+        "description": "Жёсткий конфликт: одни стейкхолдеры считают 'Profile themes' обязательным (Must), другие — ненужным (Won't)"
+      }
+    ]
+  },
+  {
+    "method": "topsis",
+    "method_name": "TOPSIS · equal criteria",
+    "results": {
+      "Document precheck": {
+        "score": 76.6,
+        "comment": "Высокий приоритет (реализовать в первую очередь)"
+      },
+      "Verification status tracker": {
+        "score": 70.1,
+        "comment": "Высокий приоритет (реализовать в первую очередь)"
+      },
+      "Manual review triage": {
+        "score": 78.2,
+        "comment": "Высокий приоритет (реализовать в первую очередь)"
+      },
+      "Duplicate payment guard": {
+        "score": 69.7,
+        "comment": "Высокий приоритет (реализовать в первую очередь)"
+      },
+      "Retry failed top-ups": {
+        "score": 57.7,
+        "comment": "Средний приоритет (возможна реализация при наличии ресурсов)"
+      },
+      "Guided first transfer": {
+        "score": 48.3,
+        "comment": "Средний приоритет (возможна реализация при наличии ресурсов)"
+      },
+      "Sanctions review queue": {
+        "score": 58.6,
+        "comment": "Средний приоритет (возможна реализация при наличии ресурсов)"
+      },
+      "Address form autofill": {
+        "score": 39.0,
+        "comment": "Низкий приоритет (может быть отложен)"
+      },
+      "Support routing": {
+        "score": 55.4,
+        "comment": "Средний приоритет (возможна реализация при наличии ресурсов)"
+      },
+      "Payment error messages": {
+        "score": 61.0,
+        "comment": "Средний приоритет (возможна реализация при наличии ресурсов)"
+      },
+      "Referral prompt": {
+        "score": 31.6,
+        "comment": "Низкий приоритет (может быть отложен)"
+      },
+      "Profile themes": {
+        "score": 16.2,
+        "comment": "Низкий приоритет (может быть отложен)"
+      }
+    },
+    "conflicts": []
+  }
+]
