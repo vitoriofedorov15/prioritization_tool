@@ -1,10 +1,16 @@
 # Requirements Prioritization Tool
 
-**Turn competing feature requests into a decision your team can explain.**
+**A research project and software tool for requirements prioritization under uncertainty.**
 
 Compare priorities across Product, Operations and Risk, explore several ranking methods, and see how the shortlist changes when stakeholder influence shifts. Built with **Python, FastAPI and React** for product teams, analysts and software engineering students.
 
-**Start here → [A quarter of onboarding improvements](examples/fintech-quarter/README.md)**
+The project originated as a research term project comparing crisp and fuzzy approaches to user requirements prioritization. The software implements the methods and makes their worked examples and ranking behavior easier to explore.
+
+**Read the research → [Full English report](docs/research/requirements-prioritization.en.md)** · [Original English PDF](docs/research/requirements-prioritization.en.pdf)
+
+The report covers MoSCoW, Kano, TOPSIS and its interval/fuzzy variants, Fuzzy Delphi, and Fuzzy AHP, with stakeholder weighting, uncertainty models, worked calculations, and a 37-entry bibliography. It also documents the desktop implementation and the later AI-enhanced web application. [Research overview and source notes](docs/research/README.md).
+
+**Try the software → [A quarter of onboarding improvements](examples/fintech-quarter/README.md)**
 12 synthetic options, three stakeholder roles, a resource budget and a recommendation backed by reproducible calculations. An educational case, independent of any company.
 
 ![Three real analyses of the synthetic onboarding case](docs/screenshots/fintech-demo.jpg)
@@ -37,14 +43,14 @@ Open **[localhost:5173](http://localhost:5173)** and click **Run fintech demo �
 - Compare scenarios and inspect stakeholder disagreement signals.
 - Add optional Gemini summaries and contextual chat.
 
-| Method family | Variants | CSV inputs |
-|---|---|---|
-| MoSCoW | Weighted category scoring | Requirements + stakeholder weights |
-| TOPSIS | Numeric ideal-solution ranking | One data file |
-| Kano | Satisfaction categories | One data file |
-| Fuzzy AHP | Type-1, Type-2 | Three files for Type-1; one for Type-2 |
-| Fuzzy TOPSIS | Trapezoidal, intuitionistic | Data + scale |
-| Fuzzy Delphi | IT2FS, intuitionistic | One data file |
+| Method family | Variants                       | CSV inputs                             |
+| ------------- | ------------------------------ | -------------------------------------- |
+| MoSCoW        | Weighted category scoring      | Requirements + stakeholder weights     |
+| TOPSIS        | Numeric ideal-solution ranking | One data file                          |
+| Kano          | Satisfaction categories        | One data file                          |
+| Fuzzy AHP     | Type-1, Type-2                 | Three files for Type-1; one for Type-2 |
+| Fuzzy TOPSIS  | Trapezoidal, intuitionistic    | Data + scale                           |
+| Fuzzy Delphi  | IT2FS, intuitionistic          | One data file                          |
 
 The onboarding case demonstrates MoSCoW and TOPSIS. Other input examples are in [`prioritization_tool/assets/`](prioritization_tool/assets/).
 
@@ -89,14 +95,14 @@ The original Tkinter application is retained in `prioritization_tool/`; the quic
 
 Interactive documentation: **[localhost:8000/docs](http://localhost:8000/docs)**.
 
-| Request | Purpose |
-|---|---|
-| `GET /api/health` | Service status |
-| `POST /api/upload` | Multipart CSV upload; returns a session ID |
-| `POST /api/analyze/{method}` | Run the selected calculation |
-| `GET /api/session/{id}` | Retrieve results |
-| `POST /api/ai/interpret` | Optional generated summary |
-| `POST /api/ai/conflicts` | Optional disagreement explanations |
-| `POST /api/ai/chat` | Optional streaming assistant |
+| Request                      | Purpose                                    |
+| ---------------------------- | ------------------------------------------ |
+| `GET /api/health`            | Service status                             |
+| `POST /api/upload`           | Multipart CSV upload; returns a session ID |
+| `POST /api/analyze/{method}` | Run the selected calculation               |
+| `GET /api/session/{id}`      | Retrieve results                           |
+| `POST /api/ai/interpret`     | Optional generated summary                 |
+| `POST /api/ai/conflicts`     | Optional disagreement explanations         |
+| `POST /api/ai/chat`          | Optional streaming assistant               |
 
 For manual startup, run `.venv/bin/python -m uvicorn main:app --app-dir backend --host 127.0.0.1 --port 8000 --env-file .env`, then `npm run dev -- --host 127.0.0.1 --strictPort` from `frontend/`. The launcher checks that ports 8000 and 5173 are available and stops its own services on exit.
