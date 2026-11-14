@@ -1,6 +1,7 @@
 # Research report
 
-**User Requirements Prioritization Based on Crisp and Fuzzy Approaches**  
+**User Requirements Prioritization Based on Crisp and Fuzzy Approaches**
+
 Viktor Fedorov · Research term project · Software Engineering, Higher School of Economics
 
 - [Read the full English report on GitHub](requirements-prioritization.en.md)

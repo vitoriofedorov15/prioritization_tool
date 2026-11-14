@@ -37,3 +37,4 @@ Thumbs.db
 # ── Output files ─────────────────────────────────────────────
 output/
 *.pdf
+!docs/research/requirements-prioritization.en.pdf

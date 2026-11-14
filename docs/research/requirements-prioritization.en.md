@@ -171,7 +171,7 @@ The software also implements validation of composite input ratings. Only adjacen
 
 #### Stakeholder Opinion Weight
 
-Each stakeholder may have a **different level of influence** on decision-making, depending on factors such as industry experience, degree of project involvement, and decision-making responsibility [\[2\]](#reference-2), [\[29\]](#reference-29). In the software, each stakeholder is assigned a **weight of opinion** used during aggregation. A normalized weight scale from $0.5$ to $2.0$ is used: $0.5$ — reduced influence (secondary participants), $1.0$ — standard level of influence, $2.0$ — maximum influence (key decision-makers). This scale provides: a sufficient range for differentiation (a $4\times$ difference), intuitive clarity (doubling the weight $\Rightarrow$ doubling the influence), and a balance of influence without excessive skew [\[6\]](#reference-6).
+Each stakeholder may have a **different level of influence** on decision-making, depending on factors such as industry experience, degree of project involvement, and decision-making responsibility [\[2\]](#reference-2), [\[29\]](#reference-29). In the software, each stakeholder is assigned a **weight of opinion** used during aggregation. A normalized weight scale from $`0.5`$ to $`2.0`$ is used: $`0.5`$ — reduced influence (secondary participants), $`1.0`$ — standard level of influence, $`2.0`$ — maximum influence (key decision-makers). This scale provides: a sufficient range for differentiation (a $`4\times`$ difference), intuitive clarity (doubling the weight $`\Rightarrow`$ doubling the influence), and a balance of influence without excessive skew [\[6\]](#reference-6).
 
 **Table 2. Weight coefficients for stakeholders**
 
@@ -193,18 +193,20 @@ Two aggregation methods can be used to obtain the final priority:
 
 ### Final Priority Calculation Methods
 
-In addition to the basic method $\text{Score} = 3M + 2S + C$, the following variants are considered:
+In addition to the basic method $`\text{Score} = 3M + 2S + C`$, the following variants are considered:
 
 - **Weighted sum method** [\[29\]](#reference-29), [\[17\]](#reference-17):
-  $$
+
+  ```math
   \text{Score} = w_1 \cdot M + w_2 \cdot S + w_3 \cdot C + w_4 \cdot W,
   ```
+
   Before use in calculations, the weights must be normalized so that their sum equals one:
-  ``` math
+
+  ```math
   w_i^\text{norm} = \frac{w_i}{\sum_{j=1}^{4} w_j}, \quad i = 1, 2, 3, 4.
   ```
 
-  $$
 - **Logarithmic scoring method** [\[18\]](#reference-18):
 
   ```math
@@ -220,26 +222,25 @@ In addition to the basic method $\text{Score} = 3M + 2S + C$, the following vari
 
 Calculation methods:
 
-- **Classical method**: $\text{Score} = 3M + 2S + 1C + 0W$ [\[6\]](#reference-6).
+- **Classical method**: $`\text{Score} = 3M + 2S + 1C + 0W`$ [\[6\]](#reference-6).
 
-- **Exponential method**: $\text{Score} = 4^M + 2^S + C$ [\[18\]](#reference-18).
+- **Exponential method**: $`\text{Score} = 4^M + 2^S + C`$ [\[18\]](#reference-18).
 
 In each method, the final score for each alternative is first calculated using the formulas above (within a single stakeholder), after which aggregation is performed taking expert weights into account.
 
 With the traditional aggregation method, the final priority is defined as the weighted sum of individual scores:
 
-$$ math
+```math
 \text{Final Priority} = \sum_{i} \left( \text{Score}_{i} \times \text{Weight}_{i} \right) \href{#reference-10}{[10]}
 ```
 
-Here $\text{Score}_{i}$ is the calculated score (priority) for the given alternative from expert $i$ using the chosen formula; $\text{Weight}_{i}$ is the opinion weight of expert $i$, reflecting their degree of influence on the final result.
+Here $`\text{Score}_{i}`$ is the calculated score (priority) for the given alternative from expert $`i`$ using the chosen formula; $`\text{Weight}_{i}`$ is the opinion weight of expert $`i`$, reflecting their degree of influence on the final result.
 
 With the individual aggregation method, the final priority is defined as the weighted average of individual scores:
-$$
 
+```math
 \text{Average Priority} = \frac{\sum_{i} \left( \text{Score}_{i} \times \text{Weight}_{i} \right)}{\sum \text{Weight}_{i}} \href{#reference-6}{[6]}
-
-$$
+```
 
 This approach allows for the fact that opinions of different experts may have different significance, and preserves calculation transparency by separating the stages: first the priority value is computed for each expert, then they are aggregated.
 
@@ -255,13 +256,13 @@ Priority calculations are performed taking stakeholder weights into account. In 
 
 **Table 3. Calculated priorities using the traditional method with stakeholder weights**
 
-| **Alternative** | **Classical Method** | **Exponential Method** | **Final Priority (%)** |
-|:---|:--:|:--:|:--:|
-| Social Media Login | 13.6 | 48 | 72.5 |
-| Two-Factor Authentication | 15.8 | 62 | 93.1 |
-| CRM Integration | 17.9 | 70 | 100.0 |
-| Data Backup | 16.4 | 66 | 94.3 |
-| PDF Data Export | 12.2 | 44 | 62.1 |
+| **Alternative**           | **Classical Method** | **Exponential Method** | **Final Priority (%)** |
+| :------------------------ | :------------------: | :--------------------: | :--------------------: |
+| Social Media Login        |         13.6         |           48           |          72.5          |
+| Two-Factor Authentication |         15.8         |           62           |          93.1          |
+| CRM Integration           |         17.9         |           70           |         100.0          |
+| Data Backup               |         16.4         |           66           |          94.3          |
+| PDF Data Export           |         12.2         |           44           |          62.1          |
 
 <span id="tab:weighted_traditional_methods" label="tab:weighted_traditional_methods"></span>
 
@@ -271,13 +272,13 @@ In this method, the priority is first computed separately for each stakeholder, 
 
 **Table 4. Calculated priorities using the individual aggregation method with stakeholder weights**
 
-| **Alternative** | **Classical Method** | **Exponential Method** | **Average Priority (%)** |
-|:---|:--:|:--:|:--:|
-| Social Media Login | 12.9 | 45 | 70.2 |
-| Two-Factor Authentication | 14.5 | 58 | 87.3 |
-| CRM Integration | 16.3 | 68 | 98.0 |
-| Data Backup | 15.1 | 64 | 92.1 |
-| PDF Data Export | 11.5 | 42 | 60.8 |
+| **Alternative**           | **Classical Method** | **Exponential Method** | **Average Priority (%)** |
+| :------------------------ | :------------------: | :--------------------: | :----------------------: |
+| Social Media Login        |         12.9         |           45           |           70.2           |
+| Two-Factor Authentication |         14.5         |           58           |           87.3           |
+| CRM Integration           |         16.3         |           68           |           98.0           |
+| Data Backup               |         15.1         |           64           |           92.1           |
+| PDF Data Export           |         11.5         |           42           |           60.8           |
 
 #### Analysis of Results and Conclusions
 
@@ -389,7 +390,7 @@ In this example, a scenario with 3 stakeholders is considered. For clarity of th
 **Table 5. Kano questionnaire results for Stakeholder 1**
 
 |                           |                   |                   |
-|:--------------------------|:-----------------:|:-----------------:|
+| :------------------------ | :---------------: | :---------------: |
 | **Alternative**           | **Stakeholder 1** | **Stakeholder 1** |
 |                           |    Functional     |   Dysfunctional   |
 | Social Media Login        |      Must-be      |    Indifferent    |
@@ -403,7 +404,7 @@ In this example, a scenario with 3 stakeholders is considered. For clarity of th
 **Table 6. Kano questionnaire results for Stakeholder 2**
 
 |                           |                   |                   |
-|:--------------------------|:-----------------:|:-----------------:|
+| :------------------------ | :---------------: | :---------------: |
 | **Alternative**           | **Stakeholder 2** | **Stakeholder 2** |
 |                           |    Functional     |   Dysfunctional   |
 | Social Media Login        |    Performance    |    Indifferent    |
@@ -417,7 +418,7 @@ In this example, a scenario with 3 stakeholders is considered. For clarity of th
 **Table 7. Kano questionnaire results for Stakeholder 3**
 
 |                           |                   |                   |
-|:--------------------------|:-----------------:|:-----------------:|
+| :------------------------ | :---------------: | :---------------: |
 | **Alternative**           | **Stakeholder 3** | **Stakeholder 3** |
 |                           |    Functional     |   Dysfunctional   |
 | Social Media Login        |    Attractive     |    Indifferent    |
@@ -445,47 +446,46 @@ To convert categories to a numerical scale, the following weights were used [\[1
 #### Traditional Aggregation Method
 
 The final priority of each alternative is calculated taking the spread of opinions into account using the formula:
-$$
 
+```math
 \text{Score} = \text{Mean} - 0.5 \times \text{Standard Deviation}
+```
 
-$$
 [\[13\]](#reference-13). The higher the final priority, the more important the feature. This approach not only accounts for the average score but also penalizes importance in the case of strong disagreement among opinions, which is important in multi-criteria decision-making.
 
 #### Weighted Aggregation Method
 
 This method takes stakeholder weights into account. The formula for calculating the priority is:
-$$
 
+```math
 \text{Score} = \frac{\sum_{i} \left( \text{Score}_{i} \times \text{Weight}_{i} \right)}{\sum \text{Weight}_{i}}
+```
 
-$$
-[\[2\]](#reference-2), [\[12\]](#reference-12), where $\text{Score}_{i}$ is the score of stakeholder $i$ and $\text{Weight}_{i}$ is their weight. The method accounts for the heterogeneous influence of different participants, which is critical in systems with key stakeholders.
+[\[2\]](#reference-2), [\[12\]](#reference-12), where $`\text{Score}_{i}`$ is the score of stakeholder $`i`$ and $`\text{Weight}_{i}`$ is their weight. The method accounts for the heterogeneous influence of different participants, which is critical in systems with key stakeholders.
 
 ### Method Results
 
 **Table 8. Comparison of traditional and weighted aggregation methods**
 
-| **Alternative** | **Traditional** **Method** | **Weighted** **Method** | **Final Priority** **(traditional method, %)** | **Final Priority** **(weighted method, %)** |
-|:---|:--:|:--:|:--:|:--:|
-| Data Backup | 3.50 | 3.65 | **100.0** | **100.0** |
-| Two-Factor Authentication | 3.33 | 3.45 | 95.1 | 94.5 |
-| PDF Data Export | 2.50 | 2.60 | 71.4 | 71.2 |
-| Social Media Login | 2.00 | 2.10 | 57.1 | 57.5 |
-| CRM Integration | 0.83 | 0.90 | 23.7 | 24.7 |
+| **Alternative**           | **Traditional** **Method** | **Weighted** **Method** | **Final Priority** **(traditional method, %)** | **Final Priority** **(weighted method, %)** |
+| :------------------------ | :------------------------: | :---------------------: | :--------------------------------------------: | :-----------------------------------------: |
+| Data Backup               |            3.50            |          3.65           |                   **100.0**                    |                  **100.0**                  |
+| Two-Factor Authentication |            3.33            |          3.45           |                      95.1                      |                    94.5                     |
+| PDF Data Export           |            2.50            |          2.60           |                      71.4                      |                    71.2                     |
+| Social Media Login        |            2.00            |          2.10           |                      57.1                      |                    57.5                     |
+| CRM Integration           |            0.83            |          0.90           |                      23.7                      |                    24.7                     |
 
 #### Calculation of the Final Priority as a Percentage
 
 The final priority is calculated using the formula:
 
-$$
-
+```math
 \text{Priority (\%)} = \frac{\text{Score}}{\text{Max Score}} \times 100
+```
 
-$$
 [\[18\]](#reference-18)
 
-where $\text{Max Score}$ is the highest result among all alternatives (for the traditional and weighted method respectively). Such normalization is widely used in multi-criteria analysis systems and allows direct comparison between alternatives.
+where $`\text{Max Score}`$ is the highest result among all alternatives (for the traditional and weighted method respectively). Such normalization is widely used in multi-criteria analysis systems and allows direct comparison between alternatives.
 
 ### Conclusions
 
@@ -527,7 +527,7 @@ This method allows alternatives to be evaluated and compared using the concept o
 
 - Applicable to various data types — both quantitative and qualitative criteria can be used.
 
-- Provides clear ordering of alternatives — the final value $C_i$ immediately identifies the best alternative.
+- Provides clear ordering of alternatives — the final value $`C_i`$ immediately identifies the best alternative.
 
 - Ability to account for criterion weights — different degrees of importance can be assigned to each criterion [\[29\]](#reference-29).
 
@@ -557,24 +557,24 @@ In the table, each row corresponds to one alternative. The columns are:
 ### Data Normalization
 
 Since stakeholders may provide answers on different scales, the data are normalized to bring them to a common scale. The following normalization method was selected as an example [\[21\]](#reference-21):
-$$
 
+```math
 r_{ij} = \frac{x_{ij}}{\sqrt{\sum_{i=1}^{n} x_{ij}^2}}
+```
 
-$$
-where $x_{ij}$ is the raw value of criterion $j$ for alternative $i$; $r_{ij}$ is the normalized value of criterion $j$ for alternative $i$; $n$ is the number of alternatives.
+where $`x_{ij}`$ is the raw value of criterion $`j`$ for alternative $`i`$; $`r_{ij}`$ is the normalized value of criterion $`j`$ for alternative $`i`$; $`n`$ is the number of alternatives.
 
 Other normalization approaches also exist. Normalization eliminates the effect of different units of measurement and value ranges, making criteria comparable.
 
 ### Data Weighting
 
 Normalized values are multiplied by stakeholder weights to account for the importance of each criterion:
-$$
 
+```math
 v_{ij} = w_j \cdot r_{ij}
+```
 
-$$
-where $w_j$ is the weight of criterion $j$ and $v_{ij}$ is the weighted normalized value [\[17\]](#reference-17), [\[29\]](#reference-29).
+where $`w_j`$ is the weight of criterion $`j`$ and $`v_{ij}`$ is the weighted normalized value [\[17\]](#reference-17), [\[29\]](#reference-29).
 
 ### Determining PIS and NIS
 
@@ -585,36 +585,35 @@ Based on the weighted normalized matrix, the following are determined:
 - **Negative Ideal Solution (NIS)** — the worst values for each criterion.
 
 Calculation formulas:
-$$
 
+```math
 PIS_j = \max v_{ij}, \quad j = 1, 2, \ldots, m
+```
 
-$$
-$$
-
+```math
 NIS_j = \min v_{ij}, \quad j = 1, 2, \ldots, m
+```
 
-$$
 [\[17\]](#reference-17), [\[21\]](#reference-21)
 
 Computations for the CSV file table:
 
 **Table 9. Example source data from the CSV file**
 
-| **Alternative** | **Security** | **Usability** | **Business Value** | **Stakeholder Weight** |
-|:---|:--:|:--:|:--:|:--:|
-| Social Media Login | 7 | 8 | 6 | 0.3 |
-| Two-Factor Authentication | 9 | 6 | 5 | 0.4 |
-| PDF Data Export | 6 | 9 | 7 | 0.2 |
-| CRM Integration | 5 | 7 | 9 | 0.1 |
-| Data Backup | 8 | 6 | 8 | 0.5 |
+| **Alternative**           | **Security** | **Usability** | **Business Value** | **Stakeholder Weight** |
+| :------------------------ | :----------: | :-----------: | :----------------: | :--------------------: |
+| Social Media Login        |      7       |       8       |         6          |          0.3           |
+| Two-Factor Authentication |      9       |       6       |         5          |          0.4           |
+| PDF Data Export           |      6       |       9       |         7          |          0.2           |
+| CRM Integration           |      5       |       7       |         9          |          0.1           |
+| Data Backup               |      8       |       6       |         8          |          0.5           |
 
 Calculated values:
 
 **Table 10. Positive and Negative Ideal Solutions**
 
 | **Criterion**  | **PIS** | **NIS** |
-|:--------------:|:-------:|:-------:|
+| :------------: | :-----: | :-----: |
 |    Security    |  0.400  |  0.050  |
 |   Usability    |  0.300  |  0.070  |
 | Business Value |  0.400  |  0.090  |
@@ -624,48 +623,47 @@ Calculated values:
 ### Calculation of Distances to PIS and NIS
 
 Distances to PIS and NIS are computed using the Euclidean metric [\[17\]](#reference-17), [\[21\]](#reference-21):
-$$
 
+```math
 D^+_i = \sqrt{\sum_{j=1}^{m} (v_{ij} - PIS_j)^2}
+```
 
-$$
-$$
-
+```math
 D^-_i = \sqrt{\sum_{j=1}^{m} (v_{ij} - NIS_j)^2}
+```
 
-$$
-where $D^+_i$ is the distance from alternative $i$ to the PIS, $D^-_i$ is the distance from alternative $i$ to the NIS.
+where $`D^+_i`$ is the distance from alternative $`i`$ to the PIS, $`D^-_i`$ is the distance from alternative $`i`$ to the NIS.
 
 Calculated distances:
 
 **Table 11. Distances to the ideal solutions**
 
-| **Alternative** | **Distance to PIS ($D^+$)** | **Distance to NIS ($D^-$)** |
-|:---|:--:|:--:|
-| Social Media Login | 0.290 | 0.130 |
-| Two-Factor Authentication | 0.140 | 0.310 |
-| PDF Data Export | 0.380 | 0.110 |
-| CRM Integration | 0.450 | 0.050 |
-| Data Backup | 0.100 | 0.350 |
+| **Alternative**           | **Distance to PIS ($`D^+`$)** | **Distance to NIS ($`D^-`$)** |
+| :------------------------ | :---------------------------: | :---------------------------: |
+| Social Media Login        |             0.290             |             0.130             |
+| Two-Factor Authentication |             0.140             |             0.310             |
+| PDF Data Export           |             0.380             |             0.110             |
+| CRM Integration           |             0.450             |             0.050             |
+| Data Backup               |             0.100             |             0.350             |
 
 <span id="tab:topsis_distances" label="tab:topsis_distances"></span>
 
 ### Calculation of the Final Alternative Priority
 
 The final priority is computed using the formula [\[17\]](#reference-17), [\[21\]](#reference-21):
-$$
 
+```math
 C_i = \frac{D^-_i}{D^+_i + D^-_i}
+```
 
-$$
-The higher $C_i$, the closer the alternative is to the ideal solution.
+The higher $`C_i`$, the closer the alternative is to the ideal solution.
 
 Final alternative ranking:
 
 **Table 12. Final alternative ranking by the TOPSIS method**
 
-| **Alternative**           | **Final Priority ($C_i$)** |
-|:--------------------------|:----------------------------:|
+| **Alternative**           | **Final Priority ($`C_i`$)** |
+| :------------------------ | :--------------------------: |
 | Data Backup               |            0.778             |
 | Two-Factor Authentication |            0.689             |
 | Social Media Login        |            0.310             |
@@ -676,11 +674,11 @@ Final alternative ranking:
 
 For qualitative interpretation of the obtained values, the following ranges may be used [\[21\]](#reference-21), [\[17\]](#reference-17):
 
-- $C_i > 0.65$ — high priority (implement first);
+- $`C_i > 0.65`$ — high priority (implement first);
 
-- $0.4 \leq C_i \leq 0.65$ — medium priority (possible implementation if resources are available; requires analysis);
+- $`0.4 \leq C_i \leq 0.65`$ — medium priority (possible implementation if resources are available; requires analysis);
 
-- $C_i < 0.4$ — low priority (can be deferred).
+- $`C_i < 0.4`$ — low priority (can be deferred).
 
 This approach links the quantitative results of the TOPSIS method to verbal characteristics, facilitating decision-making under conditions of limited resources and high uncertainty [\[17\]](#reference-17).
 
@@ -715,7 +713,7 @@ A **verbal scale** was created to translate expert responses into numerical inte
 **Table 13. Scale for converting expert ratings to intervals (with 0.4 overlap)**
 
 | **Expert Rating** | **Interval (min – max)** |
-|:-----------------:|:------------------------:|
+| :---------------: | :----------------------: |
 |     Very Low      |       \[1.0, 3.2\]       |
 |        Low        |       \[2.8, 5.2\]       |
 |      Medium       |       \[4.8, 7.2\]       |
@@ -738,13 +736,13 @@ In the classical expert rating scale, intervals are defined strictly; for exampl
 
 **Table 14. Questionnaire results with interval ratings**
 
-| **Alternative** | **Security (min – max)** | **Usability (min – max)** | **Business Value (min – max)** |
-|:---|:--:|:--:|:--:|
-| Social Media Login | \[6.8, 9.2\] | \[4.8, 7.2\] | \[2.8, 5.2\] |
-| Two-Factor Authentication | \[8.8, 10.0\] | \[6.8, 9.2\] | \[4.8, 7.2\] |
-| PDF Data Export | \[4.8, 7.2\] | \[8.8, 10.0\] | \[6.8, 9.2\] |
-| CRM Integration | \[2.8, 5.2\] | \[6.8, 9.2\] | \[8.8, 10.0\] |
-| Data Backup | \[6.8, 9.2\] | \[4.8, 7.2\] | \[6.8, 9.2\] |
+| **Alternative**           | **Security (min – max)** | **Usability (min – max)** | **Business Value (min – max)** |
+| :------------------------ | :----------------------: | :-----------------------: | :----------------------------: |
+| Social Media Login        |       \[6.8, 9.2\]       |       \[4.8, 7.2\]        |          \[2.8, 5.2\]          |
+| Two-Factor Authentication |      \[8.8, 10.0\]       |       \[6.8, 9.2\]        |          \[4.8, 7.2\]          |
+| PDF Data Export           |       \[4.8, 7.2\]       |       \[8.8, 10.0\]       |          \[6.8, 9.2\]          |
+| CRM Integration           |       \[2.8, 5.2\]       |       \[6.8, 9.2\]        |         \[8.8, 10.0\]          |
+| Data Backup               |       \[6.8, 9.2\]       |       \[4.8, 7.2\]        |          \[6.8, 9.2\]          |
 
 <span id="tab:interval_assessments" label="tab:interval_assessments"></span>
 
@@ -752,55 +750,44 @@ In the classical expert rating scale, intervals are defined strictly; for exampl
 
 Interval values were normalized as follows [\[21\]](#reference-21):
 
-$$
-
+```math
 r_{ij}^{min} = \frac{x_{ij}^{min}}{\sqrt{\sum_{i=1}^{n} (x_{ij}^{max})^2}}
+```
 
-$$
-$$
-
+```math
 r_{ij}^{max} = \frac{x_{ij}^{max}}{\sqrt{\sum_{i=1}^{n} (x_{ij}^{max})^2}}
+```
 
-$$
-
-Here: $x_{ij}^{min}$, $x_{ij}^{max}$ are the lower and upper bounds of the interval rating of criterion $j$ for alternative $i$; $r_{ij}^{min}$, $r_{ij}^{max}$ are the corresponding normalized values; $n$ is the number of alternatives. Normalization brings all values to a common scale and makes them comparable even if they were originally expressed in different ranges [\[17\]](#reference-17).
+Here: $`x_{ij}^{min}`$, $`x_{ij}^{max}`$ are the lower and upper bounds of the interval rating of criterion $`j`$ for alternative $`i`$; $`r_{ij}^{min}`$, $`r_{ij}^{max}`$ are the corresponding normalized values; $`n`$ is the number of alternatives. Normalization brings all values to a common scale and makes them comparable even if they were originally expressed in different ranges [\[17\]](#reference-17).
 
 The **Positive Ideal (PIS)** and **Negative Ideal (NIS)** solutions were then determined for each criterion:
 
-$$
-
+```math
 PIS_j^{max} = \max(r_{ij}^{max}), \quad PIS_j^{min} = \max(r_{ij}^{min})
+```
 
-$$
-$$
-
+```math
 NIS_j^{max} = \min(r_{ij}^{max}), \quad NIS_j^{min} = \min(r_{ij}^{min})
-
-$$
+```
 
 For each criterion we find the highest values (PIS) and the lowest values (NIS), separately for the upper and lower bounds of the intervals. This gives two reference solutions — one positive and one negative. The distances from each alternative to the ideal solutions are then calculated:
 
-$$
-
+```math
 D^+_i = \sqrt{\sum_{j=1}^{m} (r_{ij}^{max} - PIS_j^{max})^2}
+```
 
-$$
-$$
-
+```math
 D^-_i = \sqrt{\sum_{j=1}^{m} (r_{ij}^{min} - NIS_j^{min})^2}
+```
 
-$$
-
-These formulas adapt the classical TOPSIS metrics to interval data [\[21\]](#reference-21), [\[17\]](#reference-17). Here: $D^+_i$ is the distance from alternative $i$ to the positive ideal (PIS), computed on upper bounds; $D^-_i$ is the distance from alternative $i$ to the negative ideal (NIS), computed on lower bounds; $m$ is the number of criteria.
+These formulas adapt the classical TOPSIS metrics to interval data [\[21\]](#reference-21), [\[17\]](#reference-17). Here: $`D^+_i`$ is the distance from alternative $`i`$ to the positive ideal (PIS), computed on upper bounds; $`D^-_i`$ is the distance from alternative $`i`$ to the negative ideal (NIS), computed on lower bounds; $`m`$ is the number of criteria.
 
 Finally, the priority interval bounds are calculated for each alternative [\[17\]](#reference-17):
 
-$$
-
+```math
 C_i^{min} = \frac{D^-_i{}^{min}}{D^+_i{}^{max} + D^-_i{}^{min}}, \quad
-C_i^{max} = \frac{D^-_i{}^{max}}{D^+_i{}^{min} + D^-_i{}^{max}}
-
-$$
+    C_i^{max} = \frac{D^-_i{}^{max}}{D^+_i{}^{min} + D^-_i{}^{max}}
+```
 
 Thus, each alternative receives not a single priority value but an interval. This reflects the degree of uncertainty in the expert ratings and makes the conclusions more flexible [\[18\]](#reference-18).
 
@@ -809,7 +796,7 @@ Thus, each alternative receives not a single priority value but an interval. Thi
 **Table 15. Final alternative priorities using the TOPSIS method**
 
 | **Alternative**           | **Priority (min)** | **Priority (max)** |
-|:--------------------------|:------------------:|:------------------:|
+| :------------------------ | :----------------: | :----------------: |
 | Two-Factor Authentication |       0.6948       |       0.6948       |
 | PDF Data Export           |       0.6699       |       0.6699       |
 | Data Backup               |       0.6586       |       0.6586       |
@@ -838,7 +825,7 @@ TOPSIS with interval ratings serves as a bridge to Type-1 Fuzzy TOPSIS, where in
 
 The **Fuzzy TOPSIS Type-1** method is an extension of the classical TOPSIS method that accounts for the uncertainty and subjectivity of expert assessments [\[17\]](#reference-17). The key distinction from crisp TOPSIS lies in the use of **fuzzy sets**, which allows the perception of criteria by different stakeholders to be modeled more accurately [\[16\]](#reference-16).
 
-The term *fuzzy sets* was introduced in 1965 by the American scientist Lotfi Zadeh [\[16\]](#reference-16). He proposed a mathematical framework for describing situations in which the boundaries of concepts are vague, and elements may belong to a set not strictly (as in classical logic) but with some degree of membership in the interval from 0 to 1. This idea proved especially useful when working with linguistic variables, approximate judgments, human subjectivity, and incomplete information.
+The term _fuzzy sets_ was introduced in 1965 by the American scientist Lotfi Zadeh [\[16\]](#reference-16). He proposed a mathematical framework for describing situations in which the boundaries of concepts are vague, and elements may belong to a set not strictly (as in classical logic) but with some degree of membership in the interval from 0 to 1. This idea proved especially useful when working with linguistic variables, approximate judgments, human subjectivity, and incomplete information.
 
 The application of fuzzy logic in multi-criteria methods allows real expert opinions to be better reflected, especially in cases where precise numerical ratings are difficult or undesirable [\[18\]](#reference-18), [\[19\]](#reference-19). The Type-1 Fuzzy TOPSIS method implements this approach by using **trapezoidal membership functions** to represent criterion values [\[17\]](#reference-17).
 
@@ -848,32 +835,27 @@ Unlike interval ratings, fuzzy values do not merely define a spread boundary but
 
 In the classical approach, expert assessments are expressed as crisp numbers, which imposes rigid constraints on the decision-making process. In reality, however, the perception of alternative characteristics is often **fuzzy** and varies depending on subjective factors [\[16\]](#reference-16).
 
-A fuzzy set $\tilde{A}$ on a universe of discourse $X$ is defined by a **membership function** $\mu_{\tilde{A}}(x)$ that maps each element $x$ to the interval $[0,1]$:
+A fuzzy set $`\tilde{A}`$ on a universe of discourse $`X`$ is defined by a **membership function** $`\mu_{\tilde{A}}(x)`$ that maps each element $`x`$ to the interval $`[0,1]`$:
 
-$$
-
+```math
 \mu_{\tilde{A}}(x) : X \to [0,1]
+```
 
-$$
-
-where $\mu_{\tilde{A}}(x) = 1$ means that element $x$ fully belongs to set $\tilde{A}$; $\mu_{\tilde{A}}(x) = 0$ means that element $x$ does not belong to set $\tilde{A}$; $0 < \mu_{\tilde{A}}(x) < 1$ means that the membership of the element is **fuzzy** and is determined by the degree of confidence in its membership.
+where $`\mu_{\tilde{A}}(x) = 1`$ means that element $`x`$ fully belongs to set $`\tilde{A}`$; $`\mu_{\tilde{A}}(x) = 0`$ means that element $`x`$ does not belong to set $`\tilde{A}`$; $`0 < \mu_{\tilde{A}}(x) < 1`$ means that the membership of the element is **fuzzy** and is determined by the degree of confidence in its membership.
 
 ### Trapezoidal Fuzzy Numbers and Their Application
 
 In the context of the Fuzzy TOPSIS method, **Trapezoidal Fuzzy Numbers (TrFN)** are used as the membership function [\[17\]](#reference-17), [\[18\]](#reference-18). A trapezoidal fuzzy number is defined by four parameters:
 
-$$
-
+```math
 \tilde{A} = (a_l, a_{ml}, a_{mu}, a_u)
+```
 
-$$
-
-where $a_l$ is the **lower bound**, below which the value is not considered; $a_{ml}$ is the **left modal value**, the minimum value considered possible; $a_{mu}$ is the **right modal value**, the maximum value considered possible; $a_u$ is the **upper bound**, above which the value is not considered.
+where $`a_l`$ is the **lower bound**, below which the value is not considered; $`a_{ml}`$ is the **left modal value**, the minimum value considered possible; $`a_{mu}`$ is the **right modal value**, the maximum value considered possible; $`a_u`$ is the **upper bound**, above which the value is not considered.
 
 The membership function for a trapezoidal number is defined as follows:
 
-$$
-
+```math
 \mu_{\tilde{A}}(x) =
 \begin{cases}
 0, & x \leq a_l \text{ or } x \geq a_u \\
@@ -881,8 +863,7 @@ $$
 1, & a_{ml} \leq x \leq a_{mu} \\
 \dfrac{a_u - x}{a_u - a_{mu}}, & a_{mu} \leq x \leq a_u
 \end{cases}
-
-$$
+```
 
 This form of membership function is used in most implementations of Type-1 fuzzy numbers [\[17\]](#reference-17), [\[34\]](#reference-34).
 
@@ -890,7 +871,7 @@ This form of membership function is used in most implementations of Type-1 fuzzy
 
 The use of **trapezoidal functions** allows:
 
-1.  **Flexible modeling of subjective expert assessments** by defining zones of **high confidence** (the range from $a_{ml}$ to $a_{mu}$) and regions of **uncertainty** (the range from $a_l$ to $a_{ml}$, and from $a_{mu}$ to $a_u$) [\[18\]](#reference-18).
+1.  **Flexible modeling of subjective expert assessments** by defining zones of **high confidence** (the range from $`a_{ml}`$ to $`a_{mu}`$) and regions of **uncertainty** (the range from $`a_l`$ to $`a_{ml}`$, and from $`a_{mu}`$ to $`a_u`$) [\[18\]](#reference-18).
 
 2.  **Accounting for the variability of expert opinions**, especially when different experts give slightly differing assessments [\[19\]](#reference-19).
 
@@ -903,7 +884,7 @@ The following scale was created to translate verbal expert assessments into trap
 **Table 16. Scale for converting expert ratings to trapezoidal fuzzy numbers**
 
 | **Expert Rating** | **Fuzzy Number** |
-|:-----------------:|:----------------:|
+| :---------------: | :--------------: |
 |     Very Low      |   (1, 1, 2, 3)   |
 |        Low        |   (2, 3, 4, 5)   |
 |      Medium       |   (4, 5, 6, 7)   |
@@ -933,7 +914,7 @@ Based on the expert rating scale presented in Table 16, the following assessmen
 **Table 17. Expert assessments in trapezoidal fuzzy format**
 
 | **Alternative**           | **Security** | **Usability** | **Business Value** |
-|:--------------------------|:------------:|:-------------:|:------------------:|
+| :------------------------ | :----------: | :-----------: | :----------------: |
 | Social Media Login        |  (6,7,8,9)   |   (4,5,6,7)   |     (2,3,4,5)      |
 | Two-Factor Authentication |  (8,9,9,10)  |   (6,7,8,9)   |     (4,5,6,7)      |
 | PDF Data Export           |  (4,5,6,7)   |  (8,9,10,10)  |     (6,7,8,9)      |
@@ -948,57 +929,48 @@ Based on the expert rating scale presented in Table 16, the following assessmen
 
 Linear normalization is used to normalize the fuzzy values [\[17\]](#reference-17), [\[18\]](#reference-18):
 
-$$
-
+```math
 r_{ij}^{l} = \frac{a_{ij}^{l}}{\max a_{j}^{u}}, \quad
-r_{ij}^{m} = \frac{a_{ij}^{m}}{\max a_{j}^{u}}, \quad
-r_{ij}^{u} = \frac{a_{ij}^{u}}{\max a_{j}^{u}}
+    r_{ij}^{m} = \frac{a_{ij}^{m}}{\max a_{j}^{u}}, \quad
+    r_{ij}^{u} = \frac{a_{ij}^{u}}{\max a_{j}^{u}}
+```
 
-$$
-
-where $a_{ij}^{l}, a_{ij}^{m}, a_{ij}^{u}$ are the components of the trapezoidal fuzzy number, and $\max a_{j}^{u}$ is the largest upper value among all alternatives.
+where $`a_{ij}^{l}, a_{ij}^{m}, a_{ij}^{u}`$ are the components of the trapezoidal fuzzy number, and $`\max a_{j}^{u}`$ is the largest upper value among all alternatives.
 
 ### Determining the Positive and Negative Ideal Solutions
 
 Two ideal solutions are determined [\[17\]](#reference-17):
 
-$$
-
+```math
 \tilde{A}^{+} = (a_1^+, a_2^+, \ldots, a_n^+), \quad
-\tilde{A}^{-} = (a_1^-, a_2^-, \ldots, a_n^-)
+    \tilde{A}^{-} = (a_1^-, a_2^-, \ldots, a_n^-)
+```
 
-$$
-
-where $a_j^+ = (\max r_{ij}^{l}, \max r_{ij}^{m}, \max r_{ij}^{u})$ is the **positive ideal solution**; $a_j^- = (\min r_{ij}^{l}, \min r_{ij}^{m}, \min r_{ij}^{u})$ is the **negative ideal solution**.
+where $`a_j^+ = (\max r_{ij}^{l}, \max r_{ij}^{m}, \max r_{ij}^{u})`$ is the **positive ideal solution**; $`a_j^- = (\min r_{ij}^{l}, \min r_{ij}^{m}, \min r_{ij}^{u})`$ is the **negative ideal solution**.
 
 #### Calculation of Distances to the Ideal Solutions
 
 The distances from each alternative to the positive and negative ideal solutions are computed using the following formulas [\[17\]](#reference-17):
 
-$$
-
+```math
 D^+_i = \sqrt{\sum_{j=1}^{m} d(\tilde{r}_{ij}, \tilde{A}_j^+)^2}
+```
 
-$$
-$$
-
+```math
 D^-_i = \sqrt{\sum_{j=1}^{m} d(\tilde{r}_{ij}, \tilde{A}_j^-)^2}
+```
 
-$$
-
-where $d(\tilde{A}, \tilde{B})$ is the distance between two fuzzy numbers, calculated, for example, using the generalized Euclidean metric for trapezoidal numbers [\[17\]](#reference-17), [\[18\]](#reference-18).
+where $`d(\tilde{A}, \tilde{B})`$ is the distance between two fuzzy numbers, calculated, for example, using the generalized Euclidean metric for trapezoidal numbers [\[17\]](#reference-17), [\[18\]](#reference-18).
 
 #### Determining Priorities
 
 The final priority of each alternative is determined as follows [\[17\]](#reference-17):
 
-$$
-
+```math
 C_i = \frac{D^-_i}{D^+_i + D^-_i}
+```
 
-$$
-
-where $C_i$ is the final priority of the alternative; $D^-_i$ is the distance to the negative ideal solution; $D^+_i$ is the distance to the positive ideal solution. The higher $C_i$, the more preferred the alternative.
+where $`C_i`$ is the final priority of the alternative; $`D^-_i`$ is the distance to the negative ideal solution; $`D^+_i`$ is the distance to the positive ideal solution. The higher $`C_i`$, the more preferred the alternative.
 
 ### Calculation Results
 
@@ -1006,13 +978,13 @@ After applying the Type-1 Fuzzy TOPSIS method, the following results were obtain
 
 **Table 18. Results of the Type-1 Fuzzy TOPSIS method**
 
-| **Alternative** | **Distance to PIS ($D^+$)** | **Distance to NIS ($D^-$)** | **Priority ($C_i$)** |
-|:---|:--:|:--:|:--:|
-| Two-Factor Authentication | 0.837 | 1.241 | 0.597 |
-| PDF Data Export | 0.794 | 1.170 | 0.596 |
-| Data Backup | 0.894 | 1.131 | 0.558 |
-| CRM Integration | 1.162 | 1.221 | 0.512 |
-| Social Media Login | 1.414 | 0.800 | 0.361 |
+| **Alternative**           | **Distance to PIS ($`D^+`$)** | **Distance to NIS ($`D^-`$)** | **Priority ($`C_i`$)** |
+| :------------------------ | :---------------------------: | :---------------------------: | :--------------------: |
+| Two-Factor Authentication |             0.837             |             1.241             |         0.597          |
+| PDF Data Export           |             0.794             |             1.170             |         0.596          |
+| Data Backup               |             0.894             |             1.131             |         0.558          |
+| CRM Integration           |             1.162             |             1.221             |         0.512          |
+| Social Media Login        |             1.414             |             0.800             |         0.361          |
 
 <span id="tab:fuzzy_topsis_results" label="tab:fuzzy_topsis_results"></span>
 
@@ -1020,15 +992,15 @@ After applying the Type-1 Fuzzy TOPSIS method, the following results were obtain
 
 Based on the analysis performed using the Type-1 Fuzzy TOPSIS method for our expert rating table, the following results were obtained:
 
-- **Two-Factor Authentication** ($C_i = 0.597$) has the highest priority. This means that this feature most closely corresponds to the ideal solution taking into account expert assessments on the criteria of security, usability, and business value. Its implementation should be prioritized.
+- **Two-Factor Authentication** ($`C_i = 0.597`$) has the highest priority. This means that this feature most closely corresponds to the ideal solution taking into account expert assessments on the criteria of security, usability, and business value. Its implementation should be prioritized.
 
-- **PDF Data Export** ($C_i = 0.596$) ranks second in importance. However, the priority value differs from the first by only a negligible amount (0.001), so both alternatives can be considered practically equivalent in importance. The feature has high value and is recommended for implementation alongside two-factor authentication.
+- **PDF Data Export** ($`C_i = 0.596`$) ranks second in importance. However, the priority value differs from the first by only a negligible amount (0.001), so both alternatives can be considered practically equivalent in importance. The feature has high value and is recommended for implementation alongside two-factor authentication.
 
-- **Data Backup** ($C_i = 0.558$) also has a high priority but slightly trails the top two alternatives. This indicates that the feature is important but can be implemented after the most critical ones.
+- **Data Backup** ($`C_i = 0.558`$) also has a high priority but slightly trails the top two alternatives. This indicates that the feature is important but can be implemented after the most critical ones.
 
-- **CRM Integration** ($C_i = 0.512$) received a medium priority, indicating that its significance is not critical compared to the other alternatives.
+- **CRM Integration** ($`C_i = 0.512`$) received a medium priority, indicating that its significance is not critical compared to the other alternatives.
 
-- **Social Media Login** ($C_i = 0.361$) received the lowest priority. This means that, from the experts’ perspective, this feature has the least value and can be deferred to a later stage.
+- **Social Media Login** ($`C_i = 0.361`$) received the lowest priority. This means that, from the experts’ perspective, this feature has the least value and can be deferred to a later stage.
 
 Thus, the Type-1 Fuzzy TOPSIS method made it possible to incorporate subjective expert assessments in the form of fuzzy trapezoidal numbers and produce a ranking of alternatives [\[17\]](#reference-17), [\[34\]](#reference-34). As a result, the priority features for implementation are two-factor authentication, PDF data export, and data backup, while CRM integration and social media login have lower priority.
 
@@ -1038,17 +1010,17 @@ Thus, the Type-1 Fuzzy TOPSIS method made it possible to incorporate subjective 
 
 ### Introduction
 
-The **Intuitionistic Fuzzy TOPSIS** method is a further development of Fuzzy TOPSIS that extends it by introducing an additional parameter — the **degree of uncertainty** ($\pi$) [\[19\]](#reference-19), [\[23\]](#reference-23). This allows not only the degree of membership and non-membership to be taken into account, but also the level of the expert’s uncertainty in their assessment.
+The **Intuitionistic Fuzzy TOPSIS** method is a further development of Fuzzy TOPSIS that extends it by introducing an additional parameter — the **degree of uncertainty** ($`\pi`$) [\[19\]](#reference-19), [\[23\]](#reference-23). This allows not only the degree of membership and non-membership to be taken into account, but also the level of the expert’s uncertainty in their assessment.
 
-The concept of **Intuitionistic Fuzzy Sets (IFS)** was proposed by the Bulgarian mathematician K. T. Atanassov in 1986 [\[20\]](#reference-20) as a generalization of the classical fuzzy sets of L. Zadeh [\[16\]](#reference-16). Unlike ordinary fuzzy sets, where each element $x$ is described only by a membership function $\mu(x)$, in intuitionistic theory each element is associated with:
+The concept of **Intuitionistic Fuzzy Sets (IFS)** was proposed by the Bulgarian mathematician K. T. Atanassov in 1986 [\[20\]](#reference-20) as a generalization of the classical fuzzy sets of L. Zadeh [\[16\]](#reference-16). Unlike ordinary fuzzy sets, where each element $`x`$ is described only by a membership function $`\mu(x)`$, in intuitionistic theory each element is associated with:
 
-- a degree of membership $\mu(x) \in [0,1]$,
+- a degree of membership $`\mu(x) \in [0,1]`$,
 
-- a degree of non-membership $\nu(x) \in [0,1]$,
+- a degree of non-membership $`\nu(x) \in [0,1]`$,
 
-- and a degree of uncertainty $\pi(x) = 1 - \mu(x) - \nu(x)$,
+- and a degree of uncertainty $`\pi(x) = 1 - \mu(x) - \nu(x)`$,
 
-subject to the condition $0 \leq \mu(x) + \nu(x) \leq 1$. The value $\pi(x)$ characterizes the region in which the expert finds it difficult to give an unambiguous assessment [\[19\]](#reference-19).
+subject to the condition $`0 \leq \mu(x) + \nu(x) \leq 1`$. The value $`\pi(x)`$ characterizes the region in which the expert finds it difficult to give an unambiguous assessment [\[19\]](#reference-19).
 
 By introducing this additional characteristic, the model becomes more sensitive to situations in which the expert finds it difficult to express their opinion or entertains doubts. This is especially important in requirements prioritization tasks, where it is not always possible to clearly determine the significance of a given criterion [\[28\]](#reference-28).
 
@@ -1056,24 +1028,20 @@ Thus, the Intuitionistic Fuzzy TOPSIS method allows alternatives to be ranked ta
 
 ### Foundations of Intuitionistic Fuzzy Sets
 
-As already mentioned, an intuitionistic fuzzy set $\tilde{A}$ on a universe of discourse $X$ is defined by two functions:
+As already mentioned, an intuitionistic fuzzy set $`\tilde{A}`$ on a universe of discourse $`X`$ is defined by two functions:
 
-$$
-
+```math
 \mu_{\tilde{A}}(x): X \to [0,1], \quad
 \nu_{\tilde{A}}(x): X \to [0,1]
+```
 
-$$
-
-where $\mu_{\tilde{A}}(x)$ is the degree of membership of element $x$ in set $\tilde{A}$, and $\nu_{\tilde{A}}(x)$ is the degree of non-membership of element $x$ in set $\tilde{A}$ [\[20\]](#reference-20).
+where $`\mu_{\tilde{A}}(x)`$ is the degree of membership of element $`x`$ in set $`\tilde{A}`$, and $`\nu_{\tilde{A}}(x)`$ is the degree of non-membership of element $`x`$ in set $`\tilde{A}`$ [\[20\]](#reference-20).
 
 Additionally, the **degree of uncertainty** (hesitancy) is introduced:
 
-$$
-
+```math
 \pi_{\tilde{A}}(x) = 1 - \mu_{\tilde{A}}(x) - \nu_{\tilde{A}}(x)
-
-$$
+```
 
 Thus, each value is characterized not only by the degree of membership and non-membership but also by the expert’s level of doubt [\[19\]](#reference-19), [\[23\]](#reference-23).
 
@@ -1083,18 +1051,18 @@ The following scale was developed to translate verbal expert assessments into in
 
 **Table 19. Scale for converting expert ratings to intuitionistic fuzzy numbers**
 
-| **Expert Rating** | **Degree of Membership ($\mu$)** | **Degree of Non-membership ($\nu$)** | **Degree of Uncertainty ($\pi$)** |
-|:--:|:--:|:--:|:--:|
-| Very important, and I am certain | 0.9 | 0.05 | 0.05 |
-| Very important, but I have doubts | 0.9 | 0.1 | 0.0 |
-| Important, and I am certain | 0.7 | 0.2 | 0.1 |
-| Important, but I have doubts | 0.7 | 0.1 | 0.2 |
-| Moderately important, and I am certain | 0.5 | 0.4 | 0.1 |
-| Moderately important, but I have doubts | 0.5 | 0.3 | 0.2 |
-| Slightly important, and I am certain | 0.3 | 0.6 | 0.1 |
-| Slightly important, but I have doubts | 0.3 | 0.5 | 0.2 |
-| Not important, and I am certain | 0.1 | 0.8 | 0.1 |
-| Not important, but I have doubts | 0.1 | 0.7 | 0.2 |
+|            **Expert Rating**            | **Degree of Membership ($`\mu`$)** | **Degree of Non-membership ($`\nu`$)** | **Degree of Uncertainty ($`\pi`$)** |
+| :-------------------------------------: | :--------------------------------: | :------------------------------------: | :---------------------------------: |
+|    Very important, and I am certain     |                0.9                 |                  0.05                  |                0.05                 |
+|    Very important, but I have doubts    |                0.9                 |                  0.1                   |                 0.0                 |
+|       Important, and I am certain       |                0.7                 |                  0.2                   |                 0.1                 |
+|      Important, but I have doubts       |                0.7                 |                  0.1                   |                 0.2                 |
+| Moderately important, and I am certain  |                0.5                 |                  0.4                   |                 0.1                 |
+| Moderately important, but I have doubts |                0.5                 |                  0.3                   |                 0.2                 |
+|  Slightly important, and I am certain   |                0.3                 |                  0.6                   |                 0.1                 |
+|  Slightly important, but I have doubts  |                0.3                 |                  0.5                   |                 0.2                 |
+|     Not important, and I am certain     |                0.1                 |                  0.8                   |                 0.1                 |
+|    Not important, but I have doubts     |                0.1                 |                  0.7                   |                 0.2                 |
 
 <span id="tab:intuitionistic_scale" label="tab:intuitionistic_scale"></span>
 
@@ -1102,13 +1070,13 @@ The following scale was developed to translate verbal expert assessments into in
 
 **Table 20. Expert assessments in intuitionistic fuzzy form**
 
-| **Alternative** | **Security** | **Usability** | **Business Value** |
-|:---|:--:|:--:|:--:|
-| Social Media Login | (0.7, 0.2, 0.1) | (0.5, 0.3, 0.2) | (0.3, 0.6, 0.1) |
-| Two-Factor Authentication | (0.9, 0.05, 0.05) | (0.7, 0.2, 0.1) | (0.5, 0.3, 0.2) |
-| PDF Data Export | (0.5, 0.3, 0.2) | (0.9, 0.05, 0.05) | (0.7, 0.1, 0.2) |
-| CRM Integration | (0.3, 0.6, 0.1) | (0.7, 0.2, 0.1) | (0.9, 0.05, 0.05) |
-| Data Backup | (0.7, 0.2, 0.1) | (0.5, 0.3, 0.2) | (0.7, 0.2, 0.1) |
+| **Alternative**           |   **Security**    |   **Usability**   | **Business Value** |
+| :------------------------ | :---------------: | :---------------: | :----------------: |
+| Social Media Login        |  (0.7, 0.2, 0.1)  |  (0.5, 0.3, 0.2)  |  (0.3, 0.6, 0.1)   |
+| Two-Factor Authentication | (0.9, 0.05, 0.05) |  (0.7, 0.2, 0.1)  |  (0.5, 0.3, 0.2)   |
+| PDF Data Export           |  (0.5, 0.3, 0.2)  | (0.9, 0.05, 0.05) |  (0.7, 0.1, 0.2)   |
+| CRM Integration           |  (0.3, 0.6, 0.1)  |  (0.7, 0.2, 0.1)  | (0.9, 0.05, 0.05)  |
+| Data Backup               |  (0.7, 0.2, 0.1)  |  (0.5, 0.3, 0.2)  |  (0.7, 0.2, 0.1)   |
 
 <span id="tab:intuitionistic_fuzzy_input" label="tab:intuitionistic_fuzzy_input"></span>
 
@@ -1116,58 +1084,54 @@ The following scale was developed to translate verbal expert assessments into in
 
 #### Determining the Ideal Solutions
 
-$$
-
+```math
 \tilde{A}^{+} = (\mu^+_1, \nu^-_1, \pi^-_1), \quad
 \tilde{A}^{-} = (\mu^-_1, \nu^+_1, \pi^+_1)
+```
 
-$$
-
-where $\mu^+ = \max \mu_{ij}$, $\nu^- = \min \nu_{ij}$, $\pi^- = \min \pi_{ij}$ form the positive ideal solution; $\mu^- = \min \mu_{ij}$, $\nu^+ = \max \nu_{ij}$, $\pi^+ = \max \pi_{ij}$ form the negative ideal solution [\[19\]](#reference-19), [\[23\]](#reference-23).
+where $`\mu^+ = \max \mu_{ij}`$, $`\nu^- = \min \nu_{ij}`$, $`\pi^- = \min \pi_{ij}`$ form the positive ideal solution; $`\mu^- = \min \mu_{ij}`$, $`\nu^+ = \max \nu_{ij}`$, $`\pi^+ = \max \pi_{ij}`$ form the negative ideal solution [\[19\]](#reference-19), [\[23\]](#reference-23).
 
 #### Determining Priorities
 
-After computing the distances to the positive ideal ($D^+$) and negative ideal ($D^-$) solutions, the final priority of the alternative is determined as the closeness index [\[19\]](#reference-19), [\[28\]](#reference-28):
+After computing the distances to the positive ideal ($`D^+`$) and negative ideal ($`D^-`$) solutions, the final priority of the alternative is determined as the closeness index [\[19\]](#reference-19), [\[28\]](#reference-28):
 
-$$
-
+```math
 C_i = \frac{D^-_i}{D^+_i + D^-_i}
+```
 
-$$
-
-where $D^+_i$ is the distance from alternative $i$ to the positive ideal solution (PIS), and $D^-_i$ is the distance from alternative $i$ to the negative ideal solution (NIS). The larger the value of $C_i$, the closer the alternative is to the positive ideal solution and the higher its priority.
+where $`D^+_i`$ is the distance from alternative $`i`$ to the positive ideal solution (PIS), and $`D^-_i`$ is the distance from alternative $`i`$ to the negative ideal solution (NIS). The larger the value of $`C_i`$, the closer the alternative is to the positive ideal solution and the higher its priority.
 
 ##### Interpretation of the priority index:
 
-- If $C_i \to 1$, the alternative is maximally close to the positive ideal.
+- If $`C_i \to 1`$, the alternative is maximally close to the positive ideal.
 
-- If $C_i \to 0$, the alternative is close to the negative ideal.
+- If $`C_i \to 0`$, the alternative is close to the negative ideal.
 
-- Alternatives are ordered by descending $C_i$, allowing their priority to be determined.
+- Alternatives are ordered by descending $`C_i`$, allowing their priority to be determined.
 
 ### Calculation Results
 
 **Table 21. Results of the Intuitionistic Fuzzy TOPSIS method**
 
-| **Alternative** | **Distance to PIS** | **Distance to NIS** | **Priority ($C_i$)** |
-|:---|:--:|:--:|:--:|
-| Two-Factor Authentication | 0.294 | 0.437 | 0.598 |
-| Data Backup | 0.278 | 0.400 | 0.590 |
-| CRM Integration | 0.389 | 0.460 | 0.542 |
-| PDF Data Export | 0.328 | 0.374 | 0.533 |
-| Social Media Login | 0.532 | 0.200 | 0.273 |
+| **Alternative**           | **Distance to PIS** | **Distance to NIS** | **Priority ($`C_i`$)** |
+| :------------------------ | :-----------------: | :-----------------: | :--------------------: |
+| Two-Factor Authentication |        0.294        |        0.437        |         0.598          |
+| Data Backup               |        0.278        |        0.400        |         0.590          |
+| CRM Integration           |        0.389        |        0.460        |         0.542          |
+| PDF Data Export           |        0.328        |        0.374        |         0.533          |
+| Social Media Login        |        0.532        |        0.200        |         0.273          |
 
 ### Conclusions
 
 Based on the Intuitionistic Fuzzy TOPSIS method and the calculations performed, the following conclusions can be drawn [\[28\]](#reference-28), [\[19\]](#reference-19):
 
-- **Two-Factor Authentication** received the highest priority index ($C = 0.598$), meaning that this feature is the most important from the perspective of all criteria. It has a high degree of membership and minimal degree of non-membership, as well as a relatively low level of uncertainty in the expert assessments. Therefore, its implementation should be prioritized.
+- **Two-Factor Authentication** received the highest priority index ($`C = 0.598`$), meaning that this feature is the most important from the perspective of all criteria. It has a high degree of membership and minimal degree of non-membership, as well as a relatively low level of uncertainty in the expert assessments. Therefore, its implementation should be prioritized.
 
-- **Data Backup** also occupies a high position in terms of the priority index ($C = 0.590$). This means that experts regard it as an important feature that plays a key role in the system. The high degree of membership points to its significance from the perspective of security and business value, so its deployment is recommended at an early stage.
+- **Data Backup** also occupies a high position in terms of the priority index ($`C = 0.590`$). This means that experts regard it as an important feature that plays a key role in the system. The high degree of membership points to its significance from the perspective of security and business value, so its deployment is recommended at an early stage.
 
-- **CRM Integration** ($C = 0.542$) and **PDF Data Export** ($C = 0.533$) received medium priority index values. This indicates that these functionalities are useful but not critical. CRM Integration received a high level of uncertainty among experts, indicating disagreement about its necessity. PDF Data Export, by contrast, proved to be a more consistent feature, but its value is lower compared to the leading alternatives. Both requirements can be implemented in a second phase.
+- **CRM Integration** ($`C = 0.542`$) and **PDF Data Export** ($`C = 0.533`$) received medium priority index values. This indicates that these functionalities are useful but not critical. CRM Integration received a high level of uncertainty among experts, indicating disagreement about its necessity. PDF Data Export, by contrast, proved to be a more consistent feature, but its value is lower compared to the leading alternatives. Both requirements can be implemented in a second phase.
 
-- **Social Media Login** received the lowest priority index ($C = 0.273$). This means that this functionality is considered the least important relative to the other criteria. The high degree of non-membership and significant level of uncertainty show that this feature is either not a priority or its value is ambiguous for the experts. Implementation of this feature can be considered as an additional stage planned for later releases.
+- **Social Media Login** received the lowest priority index ($`C = 0.273`$). This means that this functionality is considered the least important relative to the other criteria. The high degree of non-membership and significant level of uncertainty show that this feature is either not a priority or its value is ambiguous for the experts. Implementation of this feature can be considered as an additional stage planned for later releases.
 
 The IF-TOPSIS method made it possible to account for the degree of uncertainty in expert assessments, providing a more flexible analysis of requirements prioritization [\[19\]](#reference-19), [\[23\]](#reference-23), [\[28\]](#reference-28).
 
@@ -1201,12 +1165,12 @@ Experts evaluate **alternatives by criteria**, giving **verbal responses**.
 
 **Table 22. Expert ratings by criterion**
 
-| **Alternative** | **Expert** | **Security** | **Usability** | **Business Value** | **Expert Weight** |
-|:--:|:--:|:--:|:--:|:--:|:--:|
-| Social Media Login | Expert 1 | High confidence – High | Medium confidence – Medium | Low confidence – Low | 0.6 |
-| Social Media Login | Expert 2 | Medium confidence – Medium | High confidence – High | High confidence – Very High | 0.4 |
-| Two-Factor Authentication | Expert 1 | Very high confidence – Very High | High confidence – High | Medium confidence – Medium | 0.6 |
-| Two-Factor Authentication | Expert 2 | High confidence – High | Medium confidence – Medium | Low confidence – Low | 0.4 |
+|      **Alternative**      | **Expert** |           **Security**           |       **Usability**        |     **Business Value**      | **Expert Weight** |
+| :-----------------------: | :--------: | :------------------------------: | :------------------------: | :-------------------------: | :---------------: |
+|    Social Media Login     |  Expert 1  |      High confidence – High      | Medium confidence – Medium |    Low confidence – Low     |        0.6        |
+|    Social Media Login     |  Expert 2  |    Medium confidence – Medium    |   High confidence – High   | High confidence – Very High |        0.4        |
+| Two-Factor Authentication |  Expert 1  | Very high confidence – Very High |   High confidence – High   | Medium confidence – Medium  |        0.6        |
+| Two-Factor Authentication |  Expert 2  |      High confidence – High      | Medium confidence – Medium |    Low confidence – Low     |        0.4        |
 
 ### Converting Verbal Ratings to IT2FS
 
@@ -1215,7 +1179,7 @@ Since experts provide **verbal assessments**, they are converted into **interval
 **Table 23. Conversion table of expert ratings to IT2FS**
 
 | **Verbal Rating** | **Central Value** | **Left Bound** | **Right Bound** |
-|:-----------------:|:-----------------:|:--------------:|:---------------:|
+| :---------------: | :---------------: | :------------: | :-------------: |
 |     Very Low      |        0.1        |      0.0       |       0.2       |
 |        Low        |        0.3        |      0.2       |       0.4       |
 |      Medium       |        0.5        |      0.3       |       0.7       |
@@ -1228,42 +1192,38 @@ Since experts provide **verbal assessments**, they are converted into **interval
 
 The Footprint of Uncertainty (**FOU**) reflects the degree of fuzziness of a fuzzy value and is computed as the difference between the upper and lower bounds of the membership function [\[25\]](#reference-25), [\[26\]](#reference-26):
 
-$$
-
+```math
 FOU(A_j) = \mu_{\tilde{A}_j}^U - \mu_{\tilde{A}_j}^L
 \label{eq:fou}
+```
 
-$$
-
-where $\mu_{\tilde{A}_j}^U$ is the upper bound of the membership function for criterion $j$, and $\mu_{\tilde{A}_j}^L$ is the lower bound of the membership function for the same criterion. The FOU value shows how wide the range of possible assessments is — that is, how uncertain the expert (or group of experts) is about the value of this criterion. The larger the FOU, the greater the uncertainty associated with the perception of this feature.
+where $`\mu_{\tilde{A}_j}^U`$ is the upper bound of the membership function for criterion $`j`$, and $`\mu_{\tilde{A}_j}^L`$ is the lower bound of the membership function for the same criterion. The FOU value shows how wide the range of possible assessments is — that is, how uncertain the expert (or group of experts) is about the value of this criterion. The larger the FOU, the greater the uncertainty associated with the perception of this feature.
 
 #### Example FOU Calculation
 
 **Table 24. Footprint of Uncertainty (FOU) for alternatives**
 
-| **Alternative** | **Security (FOU)** | **Usability (FOU)** | **Business Value (FOU)** |
-|:--:|:--:|:--:|:--:|
-| Social Media Login | 0.1 | 0.2 | 0.3 |
-| Two-Factor Authentication | 0.05 | 0.1 | 0.2 |
+|      **Alternative**      | **Security (FOU)** | **Usability (FOU)** | **Business Value (FOU)** |
+| :-----------------------: | :----------------: | :-----------------: | :----------------------: |
+|    Social Media Login     |        0.1         |         0.2         |           0.3            |
+| Two-Factor Authentication |        0.05        |         0.1         |           0.2            |
 
 ### Correction of Expert Weights at High FOU
 
 If an expert **diverges significantly** from others, their contribution **is reduced**, consistent with the recommendations on adaptive weighting in fuzzy systems [\[26\]](#reference-26), [\[25\]](#reference-25):
 
-$$
-
+```math
 W_i^{\text{new}} = W_i \times \frac{1}{1 + (\Delta_j - \Delta_{\max})}
 \label{eq:weight_correction}
+```
 
-$$
-
-where $\Delta_j$ is the observed uncertainty (FOU) of the expert for criterion $j$, and $\Delta_{\max}$ is the permissible maximum value. This approach reduces the contribution of experts whose assessments are too diffuse, thereby increasing the consistency of the result.
+where $`\Delta_j`$ is the observed uncertainty (FOU) of the expert for criterion $`j`$, and $`\Delta_{\max}`$ is the permissible maximum value. This approach reduces the contribution of experts whose assessments are too diffuse, thereby increasing the consistency of the result.
 
 #### Boundary Cases of Weight Correction
 
-- If $\Delta_j = 0$, then $W_i^{\text{new}} = W_i$. An expert with perfectly precise assessments retains their weight.
+- If $`\Delta_j = 0`$, then $`W_i^{\text{new}} = W_i`$. An expert with perfectly precise assessments retains their weight.
 
-- If $\Delta_j \gg \Delta_{\max}$, then $W_i^{\text{new}} \approx 0$. An expert with extremely uncertain assessments is excluded from the analysis.
+- If $`\Delta_j \gg \Delta_{\max}`$, then $`W_i^{\text{new}} \approx 0`$. An expert with extremely uncertain assessments is excluded from the analysis.
 
 - If the expert is not confident in their answer, their weight is reduced proportionally to the level of uncertainty.
 
@@ -1283,10 +1243,10 @@ Consistency among experts can be monitored by analyzing FOU values and dynamic w
 
 **Table 25. Final results table**
 
-| **Alternative** | **Security (corrected)** | **Usability** | **Business Value** | **Confidence Index** |
-|:--:|:--:|:--:|:--:|:--:|
-| Social Media Login | (0.68, 0.22, 0.1) | (0.52, 0.28, 0.2) | (0.35, 0.55, 0.1) | 0.75 |
-| Two-Factor Authentication | (0.88, 0.06, 0.05) | (0.72, 0.18, 0.1) | (0.52, 0.28, 0.2) | 0.90 |
+|      **Alternative**      | **Security (corrected)** |   **Usability**   | **Business Value** | **Confidence Index** |
+| :-----------------------: | :----------------------: | :---------------: | :----------------: | :------------------: |
+|    Social Media Login     |    (0.68, 0.22, 0.1)     | (0.52, 0.28, 0.2) | (0.35, 0.55, 0.1)  |         0.75         |
+| Two-Factor Authentication |    (0.88, 0.06, 0.05)    | (0.72, 0.18, 0.1) | (0.52, 0.28, 0.2)  |         0.90         |
 
 ### Conclusions
 
@@ -1308,11 +1268,11 @@ The **Delphi Intuitionistic** method is a development of the traditional Delphi 
 
 Intuitionistic Fuzzy Sets (IFS) include three key parameters:
 
-- **Degree of membership** ($\mu$) — shows how much an object belongs to the class under consideration.
+- **Degree of membership** ($`\mu`$) — shows how much an object belongs to the class under consideration.
 
-- **Degree of non-membership** ($\nu$) — shows how much an object does not belong to the class under consideration.
+- **Degree of non-membership** ($`\nu`$) — shows how much an object does not belong to the class under consideration.
 
-- **Degree of uncertainty** ($\pi = 1 - (\mu + \nu)$) — reflects the expert’s level of hesitancy [\[19\]](#reference-19).
+- **Degree of uncertainty** ($`\pi = 1 - (\mu + \nu)`$) — reflects the expert’s level of hesitancy [\[19\]](#reference-19).
 
 Thus, unlike traditional fuzzy systems, the Delphi Intuitionistic method accounts not only for the degree of membership but also for the degree of rejection, making it more precise when analyzing expert opinions.
 
@@ -1334,26 +1294,26 @@ The Delphi Intuitionistic method requires expert assessments to contain three va
 
 **Table 26. Example input data structure for the Delphi Intuitionistic method**
 
-| **Alternative** | **Expert** | **Security** ($\mu, \nu, \pi$) | **Usability** ($\mu, \nu, \pi$) | **Business Value** ($\mu, \nu, \pi$) | **Expert Weight** |
-|:--:|:--:|:--:|:--:|:--:|:--:|
-| Social Media Login | Expert 1 | (0.7, 0.2, 0.1) | (0.6, 0.3, 0.1) | (0.5, 0.4, 0.1) | 0.6 |
-| Social Media Login | Expert 2 | (0.5, 0.4, 0.1) | (0.7, 0.2, 0.1) | (0.8, 0.1, 0.1) | 0.4 |
-| Two-Factor Authentication | Expert 1 | (0.9, 0.05, 0.05) | (0.7, 0.2, 0.1) | (0.6, 0.3, 0.1) | 0.6 |
-| Two-Factor Authentication | Expert 2 | (0.8, 0.1, 0.1) | (0.6, 0.3, 0.1) | (0.4, 0.5, 0.1) | 0.4 |
+|      **Alternative**      | **Expert** | **Security** ($`\mu, \nu, \pi`$) | **Usability** ($`\mu, \nu, \pi`$) | **Business Value** ($`\mu, \nu, \pi`$) | **Expert Weight** |
+| :-----------------------: | :--------: | :------------------------------: | :-------------------------------: | :------------------------------------: | :---------------: |
+|    Social Media Login     |  Expert 1  |         (0.7, 0.2, 0.1)          |          (0.6, 0.3, 0.1)          |            (0.5, 0.4, 0.1)             |        0.6        |
+|    Social Media Login     |  Expert 2  |         (0.5, 0.4, 0.1)          |          (0.7, 0.2, 0.1)          |            (0.8, 0.1, 0.1)             |        0.4        |
+| Two-Factor Authentication |  Expert 1  |        (0.9, 0.05, 0.05)         |          (0.7, 0.2, 0.1)          |            (0.6, 0.3, 0.1)             |        0.6        |
+| Two-Factor Authentication |  Expert 2  |         (0.8, 0.1, 0.1)          |          (0.6, 0.3, 0.1)          |            (0.4, 0.5, 0.1)             |        0.4        |
 
 ### Converting Expert Ratings to Intuitionistic Fuzzy Sets
 
-To process expert assessments, a system for converting verbal values to the numerical parameters $\mu$, $\nu$, and $\pi$ must be used [\[18\]](#reference-18).
+To process expert assessments, a system for converting verbal values to the numerical parameters $`\mu`$, $`\nu`$, and $`\pi`$ must be used [\[18\]](#reference-18).
 
 **Table 27. Verbal rating to IFS correspondence table**
 
-| **Verbal Rating** | $\mu$ (membership) | $\nu$ (non-membership) | $\pi$ (uncertainty) |
-|:--:|:--:|:--:|:--:|
-| Very Low | 0.1 | 0.8 | 0.1 |
-| Low | 0.3 | 0.6 | 0.1 |
-| Medium | 0.5 | 0.4 | 0.1 |
-| High | 0.7 | 0.2 | 0.1 |
-| Very High | 0.9 | 0.05 | 0.05 |
+| **Verbal Rating** | $`\mu`$ (membership) | $`\nu`$ (non-membership) | $`\pi`$ (uncertainty) |
+| :---------------: | :------------------: | :----------------------: | :-------------------: |
+|     Very Low      |         0.1          |           0.8            |          0.1          |
+|        Low        |         0.3          |           0.6            |          0.1          |
+|      Medium       |         0.5          |           0.4            |          0.1          |
+|       High        |         0.7          |           0.2            |          0.1          |
+|     Very High     |         0.9          |           0.05           |         0.05          |
 
 ### Computing the Footprint of Uncertainty (FOU)
 
@@ -1361,21 +1321,19 @@ To process expert assessments, a system for converting verbal values to the nume
 
 In the Delphi Intuitionistic method, the Footprint of Uncertainty (**FOU**) is calculated based on intuitionistic fuzzy sets proposed in [\[20\]](#reference-20). Recall that each expert assessment is represented by three values:
 
-- **Degree of membership** $\mu$
+- **Degree of membership** $`\mu`$
 
-- **Degree of non-membership** $\nu$
+- **Degree of non-membership** $`\nu`$
 
-- **Degree of uncertainty** $\pi = 1 - (\mu + \nu)$
+- **Degree of uncertainty** $`\pi = 1 - (\mu + \nu)`$
 
 The footprint of uncertainty for an alternative is computed as:
 
-$$
-
+```math
 FOU(A_i) = \max(\pi_i) - \min(\pi_i), \quad i \in \{\text{experts}\}
+```
 
-$$
-
-where $\pi_i$ is the degree of uncertainty assigned to alternative $A_i$ by different experts. If the FOU value is too high, this indicates significant disagreement among experts.
+where $`\pi_i`$ is the degree of uncertainty assigned to alternative $`A_i`$ by different experts. If the FOU value is too high, this indicates significant disagreement among experts.
 
 #### FOU Calculation Example
 
@@ -1383,8 +1341,8 @@ Suppose we have two alternatives with ratings from two experts:
 
 **Table 28. Example of alternative ratings by experts**
 
-|      **Alternative**      | **Expert** | $\mu$ | $\nu$ | $\pi$ |
-|:-------------------------:|:----------:|:-------:|:-------:|:-------:|
+|      **Alternative**      | **Expert** | $`\mu`$ | $`\nu`$ | $`\pi`$ |
+| :-----------------------: | :--------: | :-----: | :-----: | :-----: |
 |    Social Media Login     |  Expert 1  |   0.7   |   0.2   |   0.1   |
 |    Social Media Login     |  Expert 2  |   0.5   |   0.4   |   0.1   |
 | Two-Factor Authentication |  Expert 1  |   0.9   |  0.05   |  0.05   |
@@ -1392,16 +1350,13 @@ Suppose we have two alternatives with ratings from two experts:
 
 Computing FOU:
 
-$$
-
+```math
 FOU_{\text{Social Media Login}} = \max(0.1, 0.1) - \min(0.1, 0.1) = 0
+```
 
-$$
-$$
-
+```math
 FOU_{\text{Two-Factor Authentication}} = \max(0.05, 0.1) - \min(0.05, 0.1) = 0.05
-
-$$
+```
 
 Thus, **Social Media Login** has **zero uncertainty**, while **Two-Factor Authentication** has a small uncertainty, confirming the consensus of expert opinions on the first alternative.
 
@@ -1411,24 +1366,22 @@ The Delphi Intuitionistic method also implements a **dynamic expert weight corre
 
 #### Weight Correction Formula
 
-The weight of expert $W_i$ is recalculated as follows:
+The weight of expert $`W_i`$ is recalculated as follows:
 
-$$
-
+```math
 W_i^{\text{new}} = W_i \times \frac{1}{1 + (\pi_i - \pi_{\text{avg}})}
+```
 
-$$
-
-where $W_i$ is the initial weight of the expert, $\pi_i$ is the average uncertainty across all assessments of this expert, and $\pi_{\text{avg}}$ is the average uncertainty across all experts.
+where $`W_i`$ is the initial weight of the expert, $`\pi_i`$ is the average uncertainty across all assessments of this expert, and $`\pi_{\text{avg}}`$ is the average uncertainty across all experts.
 
 #### Weight Correction Examples
 
 **Table 29. Expert weight correction**
 
-| **Expert** | **Initial Weight** | **Average Uncertainty** ($\pi_i$) | **Corrected Weight** |
-|:--:|:--:|:--:|:--:|
-| Expert 1 | 0.6 | 0.1 | $0.6 \times \dfrac{1}{1 + (0.1 - 0.15)} = 0.63$ |
-| Expert 2 | 0.4 | 0.3 | $0.4 \times \dfrac{1}{1 + (0.3 - 0.15)} = 0.35$ |
+| **Expert** | **Initial Weight** | **Average Uncertainty** ($`\pi_i`$) |               **Corrected Weight**                |
+| :--------: | :----------------: | :---------------------------------: | :-----------------------------------------------: |
+|  Expert 1  |        0.6         |                 0.1                 | $`0.6 \times \dfrac{1}{1 + (0.1 - 0.15)} = 0.63`$ |
+|  Expert 2  |        0.4         |                 0.3                 | $`0.4 \times \dfrac{1}{1 + (0.3 - 0.15)} = 0.35`$ |
 
 ### Final Results Table
 
@@ -1436,10 +1389,10 @@ After normalizing the assessments and correcting the weights, a final table is f
 
 **Table 30. Final alternative assessments**
 
-| **Alternative** | **Security (corrected)** | **Usability** | **Business Value** | **Confidence Index** |
-|:--:|:--:|:--:|:--:|:--:|
-| Social Media Login | (0.68, 0.22, 0.1) | (0.52, 0.28, 0.2) | (0.35, 0.55, 0.1) | 0.75 |
-| Two-Factor Authentication | (0.88, 0.06, 0.05) | (0.72, 0.18, 0.1) | (0.52, 0.28, 0.2) | 0.90 |
+|      **Alternative**      | **Security (corrected)** |   **Usability**   | **Business Value** | **Confidence Index** |
+| :-----------------------: | :----------------------: | :---------------: | :----------------: | :------------------: |
+|    Social Media Login     |    (0.68, 0.22, 0.1)     | (0.52, 0.28, 0.2) | (0.35, 0.55, 0.1)  |         0.75         |
+| Two-Factor Authentication |    (0.88, 0.06, 0.05)    | (0.72, 0.18, 0.1) | (0.52, 0.28, 0.2)  |         0.90         |
 
 **Interpretation:**
 
@@ -1492,7 +1445,7 @@ The CSV file contains three main data blocks:
 **Table 31. Example CSV file for criteria comparison**
 
 |   Criterion    | Security | Usability | Business Value |
-|:--------------:|:--------:|:---------:|:--------------:|
+| :------------: | :------: | :-------: | :------------: |
 |    Security    |    1     |     3     |       7        |
 |   Usability    |   1/3    |     1     |       5        |
 | Business Value |   1/7    |    1/5    |       1        |
@@ -1516,7 +1469,7 @@ Answers are given in verbal form and converted to fuzzy numbers.
 **Table 32. Expert rating conversion scale**
 
 |        Rating         | Crisp value (AHP) | Triangular fuzzy number (TFN) |
-|:---------------------:|:-----------------:|:-----------------------------:|
+| :-------------------: | :---------------: | :---------------------------: |
 |   Equally important   |         1         |        (1.0, 1.0, 1.0)        |
 |   Weakly preferable   |         2         |        (1.5, 2.0, 2.5)        |
 | Moderately preferable |         3         |        (2.5, 3.0, 3.5)        |
@@ -1527,28 +1480,24 @@ Answers are given in verbal form and converted to fuzzy numbers.
 
 The Consistency Index (CI) is computed as:
 
-$$
-
+```math
 CI = \frac{\lambda_{\max} - n}{n - 1}
+```
 
-$$
-
-where $\lambda_{\max}$ is the maximum eigenvalue of the matrix and $n$ is the number of criteria.
+where $`\lambda_{\max}`$ is the maximum eigenvalue of the matrix and $`n`$ is the number of criteria.
 
 Then the **Consistency Ratio (CR)** is computed:
 
-$$
-
+```math
 CR = \frac{CI}{RI}
+```
 
-$$
-
-Where $RI$ is the **Random Consistency Index**, calculated as the average value over random matrices [\[10\]](#reference-10):
+Where $`RI`$ is the **Random Consistency Index**, calculated as the average value over random matrices [\[10\]](#reference-10):
 
 **Table 33. Random Consistency Index (RI)**
 
-| Number of criteria ($n$) | Random Index $RI$ |
-|:--------------------------:|:-------------------:|
+| Number of criteria ($`n`$) | Random Index $`RI`$ |
+| :------------------------: | :-----------------: |
 |             1              |          0          |
 |             2              |          0          |
 |             3              |        0.58         |
@@ -1556,9 +1505,9 @@ Where $RI$ is the **Random Consistency Index**, calculated as the average value 
 |             5              |        1.12         |
 |             6              |        1.24         |
 
-**If $CR < 0.1$, the matrix is considered consistent.**
+**If $`CR < 0.1`$, the matrix is considered consistent.**
 
-If $CR > 0.1$, possible remedies include:
+If $`CR > 0.1`$, possible remedies include:
 
 - Revising **contradictory comparisons**
 
@@ -1570,20 +1519,18 @@ If $CR > 0.1$, possible remedies include:
 
 The final priorities of the alternatives are calculated using the following formula:
 
-$$
-
+```math
 P_i = \sum_{j=1}^m W_j \times W_{ij}
+```
 
-$$
-
-where $P_i$ is the priority of alternative $i$, $W_j$ is the weight of criterion $j$, and $W_{ij}$ is the local priority of alternative $i$ with respect to criterion $j$ [\[32\]](#reference-32), [\[37\]](#reference-37). Thus, each alternative receives an aggregated score reflecting its overall significance accounting for the relative importance of all criteria.
+where $`P_i`$ is the priority of alternative $`i`$, $`W_j`$ is the weight of criterion $`j`$, and $`W_{ij}`$ is the local priority of alternative $`i`$ with respect to criterion $`j`$ [\[32\]](#reference-32), [\[37\]](#reference-37). Thus, each alternative receives an aggregated score reflecting its overall significance accounting for the relative importance of all criteria.
 
 #### Example of Final Priorities
 
 **Table 34. Final alternative priorities**
 
 | Alternative | Final priority |
-|:-----------:|:--------------:|
+| :---------: | :------------: |
 |     A4      |     0.312      |
 |     A1      |     0.274      |
 |     A3      |     0.215      |
@@ -1622,7 +1569,7 @@ The **Fuzzy AHP Type-1** method has the following advantages:
 
 IT2FN models uncertainty at two levels:
 
-- **First level (X)** — set of values (e.g., preference $5 \pm 1$);
+- **First level (X)** — set of values (e.g., preference $`5 \pm 1`$);
 
 - **Second level (Y)** — degree of confidence that a value belongs to the first level.
 
@@ -1630,13 +1577,11 @@ Under interval approximation (Interval Type-2 Fuzzy Set), the Y domain is simpli
 
 The canonical representation of an Interval Type-2 Fuzzy Number (IT2FN) is written as:
 
-$$
-
+```math
 \tilde{A} = \left[ (l_1, m_1, m_2, u_1); \ (l_2, m_1, m_2, u_2) \right]
+```
 
-$$
-
-where $(l_1, m_1, m_2, u_1)$ and $(l_2, m_1, m_2, u_2)$ are the boundaries of the lower and upper trapezoidal membership functions, respectively. The values $l_1$ and $u_1$ define the boundaries of the lower level (Lower Membership Function), while $l_2$ and $u_2$ define the boundaries of the upper level (Upper Membership Function). The values $m_1$ and $m_2$ are shared by both levels and define the central preference region. This representation makes it possible to model both the “spread” of the assessments themselves and the degree of expert uncertainty in each of them.
+where $`(l_1, m_1, m_2, u_1)`$ and $`(l_2, m_1, m_2, u_2)`$ are the boundaries of the lower and upper trapezoidal membership functions, respectively. The values $`l_1`$ and $`u_1`$ define the boundaries of the lower level (Lower Membership Function), while $`l_2`$ and $`u_2`$ define the boundaries of the upper level (Upper Membership Function). The values $`m_1`$ and $`m_2`$ are shared by both levels and define the central preference region. This representation makes it possible to model both the “spread” of the assessments themselves and the degree of expert uncertainty in each of them.
 
 **Type-2 is important because:**
 
@@ -1649,12 +1594,12 @@ where $(l_1, m_1, m_2, u_1)$ and $(l_2, m_1, m_2, u_2)$ are the boundaries of th
 **Table 35. Saaty scale for Type-2 Fuzzy AHP**
 
 |      **Rating**       |        **IT2FN (lower; upper)**         |
-|:---------------------:|:---------------------------------------:|
-|   Equally important   |     $(1, 1, 1, 1); (1, 1, 1, 1)$      |
-|   Weakly preferable   | $(1.5, 2, 2, 2.5); (1.3, 2, 2, 2.7)$  |
-| Moderately preferable | $(2.5, 3, 3, 3.5); (2.2, 3, 3, 3.8)$  |
-|  Strongly preferable  | $(4.5, 5, 5, 5.5); (4.0, 5, 5, 6.0)$  |
-| Absolutely preferable | $(8.5, 9, 9, 9.5); (8.0, 9, 9, 10.0)$ |
+| :-------------------: | :-------------------------------------: |
+|   Equally important   |     $`(1, 1, 1, 1); (1, 1, 1, 1)`$      |
+|   Weakly preferable   | $`(1.5, 2, 2, 2.5); (1.3, 2, 2, 2.7)`$  |
+| Moderately preferable | $`(2.5, 3, 3, 3.5); (2.2, 3, 3, 3.8)`$  |
+|  Strongly preferable  | $`(4.5, 5, 5, 5.5); (4.0, 5, 5, 6.0)`$  |
+| Absolutely preferable | $`(8.5, 9, 9, 9.5); (8.0, 9, 9, 10.0)`$ |
 
 ### Input Data and CSV Format
 
@@ -1675,19 +1620,17 @@ The input file consists of rows containing:
 
 **Note:** when aggregating expert ratings in the context of Type-2 fuzzy logic, the following formula is used:
 
-$$
-
+```math
 \bar{A}_{ij} = \sum_{k=1}^{N} w_k \cdot \tilde{A}_{ij}^{(k)}
+```
 
-$$
-
-where $\bar{A}_{ij}$ is the aggregated fuzzy rating of alternative $i$ with respect to criterion $j$, obtained by combining the opinions of all experts; $\tilde{A}_{ij}^{(k)}$ is the fuzzy rating provided by expert $k$; $w_k$ is the weight (degree of trust) assigned to that expert’s opinion; $N$ is the total number of experts. Aggregation is performed component-wise over the fuzzy numbers (e.g., over the trapezoidal boundaries), preserving the IT2FN structure [\[25\]](#reference-25), [\[35\]](#reference-35), [\[26\]](#reference-26). Thus, each expert’s opinion contributes proportionally to their weight, allowing different levels of expertise or involvement to be taken into account.
+where $`\bar{A}_{ij}`$ is the aggregated fuzzy rating of alternative $`i`$ with respect to criterion $`j`$, obtained by combining the opinions of all experts; $`\tilde{A}_{ij}^{(k)}`$ is the fuzzy rating provided by expert $`k`$; $`w_k`$ is the weight (degree of trust) assigned to that expert’s opinion; $`N`$ is the total number of experts. Aggregation is performed component-wise over the fuzzy numbers (e.g., over the trapezoidal boundaries), preserving the IT2FN structure [\[25\]](#reference-25), [\[35\]](#reference-35), [\[26\]](#reference-26). Thus, each expert’s opinion contributes proportionally to their weight, allowing different levels of expertise or involvement to be taken into account.
 
 Aggregation is performed separately for the lower and upper bounds.
 
 ### Processing Type-2 Numbers: Aggregation and Type Reduction
 
-Aggregation is performed component-wise (e.g., $l_1, l_2, u_1, u_2$) with expert weights taken into account.
+Aggregation is performed component-wise (e.g., $`l_1, l_2, u_1, u_2`$) with expert weights taken into account.
 
 This is followed by Type Reduction [\[35\]](#reference-35):
 
@@ -1699,81 +1642,71 @@ This is followed by Type Reduction [\[35\]](#reference-35):
 
 **Defuzzification**:
 
-$$
-
+```math
 \text{Defuzz}( \tilde{A} ) = \frac{l + 2m + u}{4}
-
-$$
+```
 
 ### Example: Aggregated Comparison Matrix
 
 **Table 36. Final aggregated comparison matrix with defuzzification**
 
-| Criteria | Lower IT2FN bound | Upper IT2FN bound | Defuzzified value |
-|:--:|:--:|:--:|:--:|
-| Security \> Usability | (4.2, 5.0, 5.0, 5.5) | (4.0, 5.0, 5.0, 6.0) | 5.0 |
-| Security \> Business Value | (8.5, 9.0, 9.0, 9.5) | (8.0, 9.0, 9.0, 10.0) | 9.0 |
-| Usability \> Business Value | (2.5, 3.0, 3.0, 3.5) | (2.2, 3.0, 3.0, 3.8) | 3.0 |
+|          Criteria           |  Lower IT2FN bound   |   Upper IT2FN bound   | Defuzzified value |
+| :-------------------------: | :------------------: | :-------------------: | :---------------: |
+|    Security \> Usability    | (4.2, 5.0, 5.0, 5.5) | (4.0, 5.0, 5.0, 6.0)  |        5.0        |
+| Security \> Business Value  | (8.5, 9.0, 9.0, 9.5) | (8.0, 9.0, 9.0, 10.0) |        9.0        |
+| Usability \> Business Value | (2.5, 3.0, 3.0, 3.5) | (2.2, 3.0, 3.0, 3.8)  |        3.0        |
 
 ### Calculation of Criteria Weights and Alternative Priorities Accounting for Expert Weights
 
-After each pairwise comparison has been converted into Interval Type-2 Fuzzy Numbers (IT2FN), the procedure of aggregating expert opinions with their individual weights $w_k$ is performed, subject to the normalization condition: $\sum_{k=1}^{n} w_k = 1$.
+After each pairwise comparison has been converted into Interval Type-2 Fuzzy Numbers (IT2FN), the procedure of aggregating expert opinions with their individual weights $`w_k`$ is performed, subject to the normalization condition: $`\sum_{k=1}^{n} w_k = 1`$.
 
 #### Aggregation of Criterion Ratings by Expert Weights
 
-Let $\tilde{A}_{ij}^{(k)}$ denote the IT2FN rating from expert $k$ for the pair of criteria $i$ and $j$. Then the aggregated rating is computed as:
+Let $`\tilde{A}_{ij}^{(k)}`$ denote the IT2FN rating from expert $`k`$ for the pair of criteria $`i`$ and $`j`$. Then the aggregated rating is computed as:
 
-$$
-
+```math
 \tilde{A}_{ij}^{\text{agg}} = \sum_{k=1}^{n} w_k \cdot \tilde{A}_{ij}^{(k)}
+```
 
-$$
-
-where $\tilde{A}_{ij}^{\text{agg}}$ is the final combined IT2FN rating obtained by weighted summation of the individual expert opinions.
+where $`\tilde{A}_{ij}^{\text{agg}}`$ is the final combined IT2FN rating obtained by weighted summation of the individual expert opinions.
 
 When using the trapezoidal representation, aggregation is performed separately over each component of the lower and upper membership functions:
 
-$$
-
+```math
 \tilde{A}_{ij}^{\text{agg}} = \left[
 \begin{aligned}
 &\left( \sum w_k \cdot l_1^{(k)}, \sum w_k \cdot m_1^{(k)}, \sum w_k \cdot m_2^{(k)}, \sum w_k \cdot u_1^{(k)} \right); \\
 &\left( \sum w_k \cdot l_2^{(k)}, m_1, m_2, \sum w_k \cdot u_2^{(k)} \right)
 \end{aligned}
 \right]
+```
 
-$$
-
-Here aggregation is performed separately for the left and right boundaries of the lower ($l_1^{(k)}, u_1^{(k)}$) and upper ($l_2^{(k)}, u_2^{(k)}$) trapezoidal levels. The modal values $m_1, m_2$ are typically kept fixed or computed as expert-weighted averages.
+Here aggregation is performed separately for the left and right boundaries of the lower ($`l_1^{(k)}, u_1^{(k)}`$) and upper ($`l_2^{(k)}, u_2^{(k)}`$) trapezoidal levels. The modal values $`m_1, m_2`$ are typically kept fixed or computed as expert-weighted averages.
 
 #### Type Reduction and Defuzzification
 
-After obtaining the aggregated IT2FN rating, it is necessary to obtain a crisp numerical value. This is achieved via **type-reduction**, for example using the *Centroid Min-Max* approach:
+After obtaining the aggregated IT2FN rating, it is necessary to obtain a crisp numerical value. This is achieved via **type-reduction**, for example using the _Centroid Min-Max_ approach:
 
-$$
-
+```math
 \text{C}_{ij} = \left( \frac{l_1 + 2m_1 + u_1}{4}, \frac{l_2 + 2m_2 + u_2}{4} \right)
+```
 
-$$
-
-where $C_{ij}^{(1)}$ and $C_{ij}^{(2)}$ are the centroids of the lower and upper levels of the corresponding trapezoidal function. The formula reflects a balanced weighting of the central part, assigning greater importance to modal values.
+where $`C_{ij}^{(1)}`$ and $`C_{ij}^{(2)}`$ are the centroids of the lower and upper levels of the corresponding trapezoidal function. The formula reflects a balanced weighting of the central part, assigning greater importance to modal values.
 
 To obtain a single final crisp value, the two centroids are averaged:
 
-$$
-
+```math
 \text{Defuzz}(\tilde{A}_{ij}) = \frac{C_{ij}^{(1)} + C_{ij}^{(2)}}{2}
+```
 
-$$
-
-where $\text{Defuzz}(\tilde{A}_{ij})$ is the defuzzified rating of the criteria pair $i$ and $j$, obtained as the simple mean of the lower and upper centroids. This procedure makes it possible to rank alternatives or criteria on a crisp scale while preserving the effect of uncertainty modeling [\[35\]](#reference-35), [\[26\]](#reference-26).
+where $`\text{Defuzz}(\tilde{A}_{ij})`$ is the defuzzified rating of the criteria pair $`i`$ and $`j`$, obtained as the simple mean of the lower and upper centroids. This procedure makes it possible to rank alternatives or criteria on a crisp scale while preserving the effect of uncertainty modeling [\[35\]](#reference-35), [\[26\]](#reference-26).
 
 Based on the defuzzified matrix, normalization is performed and the **eigenvector** corresponding to the criteria weights is extracted.
 
 **Table 37. Criteria weights after aggregation with expert weights**
 
 |   Criterion    | Weight |
-|:--------------:|:------:|
+| :------------: | :----: |
 |    Security    | 0.512  |
 |   Usability    | 0.308  |
 | Business Value | 0.180  |
@@ -1782,13 +1715,11 @@ Based on the defuzzified matrix, normalization is performed and the **eigenvecto
 
 For each alternative and criterion, interval fuzzy ratings from each expert are specified. These are also aggregated with expert weights using an analogous formula.
 
-After type-reduction and defuzzification of alternative ratings $W_{ij}$ for each criterion $j$, the final priority of alternative $A_i$ is calculated:
+After type-reduction and defuzzification of alternative ratings $`W_{ij}`$ for each criterion $`j`$, the final priority of alternative $`A_i`$ is calculated:
 
-$$
-
+```math
 P_i = \sum_{j=1}^{m} W_j \cdot W_{ij}
-
-$$
+```
 
 ### Final Alternative Priorities (Expert Weights and Uncertainty Accounted For)
 
@@ -1797,7 +1728,7 @@ Example calculation after aggregation and defuzzification:
 **Table 38. Alternative ranking with expert weights in Fuzzy AHP Type-2**
 
 |          Alternative           | Final priority |
-|:------------------------------:|:--------------:|
+| :----------------------------: | :------------: |
 | A2 (Two-Factor Authentication) |     0.334      |
 |    A1 (Social Media Login)     |     0.289      |
 |        A3 (PDF Export)         |     0.221      |
@@ -1827,7 +1758,7 @@ The application follows a client–server architecture comprising three logical 
 **Table 39. Technology stack of the web application**
 
 | **Layer**       | **Technology**                            |
-|:----------------|:------------------------------------------|
+| :-------------- | :---------------------------------------- |
 | Backend         | Python 3.9+, FastAPI, Uvicorn             |
 | Frontend        | React 18, Vite, Tailwind CSS, Recharts    |
 | AI service      | Google Gemini 2.0 Flash (REST, free tier) |
@@ -1847,20 +1778,20 @@ The full set of REST endpoints is summarized in Table 40.
 
 **Table 40. REST API endpoint reference**
 
-| **Method** | **Endpoint** | **Description** |
-|:---|:---|:---|
-| `POST` | `/api/upload` | Upload one or more CSV files; returns `session_id` |
-| `POST` | `/api/analyze/{method}` | Run prioritization analysis; returns ranked results and conflict data |
-| `POST` | `/api/ai/interpret` | Generate a natural-language summary of the current session’s results |
-| `POST` | `/api/ai/conflicts` | Enrich detected conflicts with AI-generated root-cause analysis and resolution advice |
-| `POST` | `/api/ai/chat` | Streaming conversational assistant (SSE); full analysis context injected into the system prompt |
-| `GET` | `/api/session/{id}` | Retrieve session data including uploaded files and all prior analysis results |
+| **Method** | **Endpoint**            | **Description**                                                                                 |
+| :--------- | :---------------------- | :---------------------------------------------------------------------------------------------- |
+| `POST`     | `/api/upload`           | Upload one or more CSV files; returns `session_id`                                              |
+| `POST`     | `/api/analyze/{method}` | Run prioritization analysis; returns ranked results and conflict data                           |
+| `POST`     | `/api/ai/interpret`     | Generate a natural-language summary of the current session’s results                            |
+| `POST`     | `/api/ai/conflicts`     | Enrich detected conflicts with AI-generated root-cause analysis and resolution advice           |
+| `POST`     | `/api/ai/chat`          | Streaming conversational assistant (SSE); full analysis context injected into the system prompt |
+| `GET`      | `/api/session/{id}`     | Retrieve session data including uploaded files and all prior analysis results                   |
 
 Session state is held entirely in memory using a Python dictionary keyed by UUID. This design choice eliminates the need for a database and simplifies deployment: the application requires no external infrastructure beyond a Python runtime and a Node.js environment for the frontend build. The trade-off is that sessions are ephemeral and do not persist across server restarts, which is acceptable for the educational and research context of this project.
 
 The logic bridge module (`logic_bridge.py`) imports the algorithm files from the original tkinter application without any modification. This preserves the correctness of the mathematical implementations verified in Sections 1–8 and avoids code duplication. Each algorithm is invoked through a thin adapter that converts the structured session data into the format expected by the original logic and maps the output back into a JSON-serializable structure.
 
-Conflict detection is performed within the analysis router before the results are returned to the frontend. The system classifies disagreements into two categories: *hard conflicts*, where two or more stakeholders assign diametrically opposed rankings to the same alternative (e.g., one stakeholder considers a feature critical while another considers it unnecessary), and *soft conflicts*, where moderate but non-trivial divergences exist. The detected conflicts are stored in the session object and can subsequently be enriched with AI-generated explanations.
+Conflict detection is performed within the analysis router before the results are returned to the frontend. The system classifies disagreements into two categories: _hard conflicts_, where two or more stakeholders assign diametrically opposed rankings to the same alternative (e.g., one stakeholder considers a feature critical while another considers it unnecessary), and _soft conflicts_, where moderate but non-trivial divergences exist. The detected conflicts are stored in the session object and can subsequently be enriched with AI-generated explanations.
 
 ### Frontend: React Application
 
@@ -1904,14 +1835,14 @@ All six prioritization families implemented in the desktop application are expos
 
 **Table 41. Prioritization methods supported by the web application**
 
-| **Method** | **Variants** | **Input files** |
-|:---|:---|:--:|
-| MoSCoW | — | 2 (requirements + stakeholder weights) |
-| TOPSIS | — | 1 |
-| Kano Model | — | 1 |
-| Fuzzy AHP | Type-1 (triangular), Type-2 (interval) | 1–3 |
-| Fuzzy TOPSIS | Fuzzy Type-1 (trapezoidal), Intuitionistic (IFS) | 2 |
-| Fuzzy Delphi | IT2FS, Intuitionistic (IFS) | 1 |
+| **Method**   | **Variants**                                     |            **Input files**             |
+| :----------- | :----------------------------------------------- | :------------------------------------: |
+| MoSCoW       | —                                                | 2 (requirements + stakeholder weights) |
+| TOPSIS       | —                                                |                   1                    |
+| Kano Model   | —                                                |                   1                    |
+| Fuzzy AHP    | Type-1 (triangular), Type-2 (interval)           |                  1–3                   |
+| Fuzzy TOPSIS | Fuzzy Type-1 (trapezoidal), Intuitionistic (IFS) |                   2                    |
+| Fuzzy Delphi | IT2FS, Intuitionistic (IFS)                      |                   1                    |
 
 Each method’s Analysis page displays an inline file-format guide specifying required column names and permissible values for every CSV file. Example CSV files covering all methods and variants are bundled with the application in the `prioritization_tool/assets/` directory, allowing users to test the system immediately after installation.
 
@@ -1919,13 +1850,13 @@ Each method’s Analysis page displays an inline file-format guide specifying re
 
 Several architectural decisions deserve explicit discussion, as they reflect deliberate trade-offs appropriate to the project’s educational and research context.
 
-*Stateless in-memory sessions.* Choosing in-memory session storage over a persistent database significantly simplifies deployment and eliminates infrastructure dependencies. The application starts with a single shell script (`start.sh`) that launches both the backend and frontend servers simultaneously. The cost is that sessions are lost on server restart, but for an analytical tool used in short interactive sessions this is acceptable.
+_Stateless in-memory sessions._ Choosing in-memory session storage over a persistent database significantly simplifies deployment and eliminates infrastructure dependencies. The application starts with a single shell script (`start.sh`) that launches both the backend and frontend servers simultaneously. The cost is that sessions are lost on server restart, but for an analytical tool used in short interactive sessions this is acceptable.
 
-*Logic bridge pattern.* Reusing the original tkinter application’s algorithm files without modification was a deliberate choice to ensure mathematical correctness. All eight algorithm implementations had been verified during the first phase of the project. Reimplementing them in a REST-oriented style would have introduced regression risk. The bridge layer adds negligible overhead while preserving the full fidelity of the mathematical models described in Sections 1–8.
+_Logic bridge pattern._ Reusing the original tkinter application’s algorithm files without modification was a deliberate choice to ensure mathematical correctness. All eight algorithm implementations had been verified during the first phase of the project. Reimplementing them in a REST-oriented style would have introduced regression risk. The bridge layer adds negligible overhead while preserving the full fidelity of the mathematical models described in Sections 1–8.
 
-*Graceful AI degradation.* The free Gemini tier allows 1,500 requests per day and 15 requests per minute. When the quota is exhausted, the AI service returns a structured error that the frontend renders as an informative message rather than a generic error state. All prioritization computations continue to function normally; only the AI interpretation, conflict analysis, and chat features are temporarily unavailable. This design ensures that the core analytical functionality is never blocked by external API quota limits.
+_Graceful AI degradation._ The free Gemini tier allows 1,500 requests per day and 15 requests per minute. When the quota is exhausted, the AI service returns a structured error that the frontend renders as an informative message rather than a generic error state. All prioritization computations continue to function normally; only the AI interpretation, conflict analysis, and chat features are temporarily unavailable. This design ensures that the core analytical functionality is never blocked by external API quota limits.
 
-*CSV as the universal data format.* All six method families accept input as CSV files. This decision maximizes compatibility with the tools analysts already use — spreadsheet software, survey exports, data pipelines — and avoids the need for a custom data-entry interface. Column names and structures are method-specific and documented in the per-method file guides shown on the Analysis page.
+_CSV as the universal data format._ All six method families accept input as CSV files. This decision maximizes compatibility with the tools analysts already use — spreadsheet software, survey exports, data pipelines — and avoids the need for a custom data-entry interface. Column names and structures are method-specific and documented in the per-method file guides shown on the Analysis page.
 
 ### Conclusions
 
@@ -1973,151 +1904,151 @@ Therefore, the main value of the conducted research is to show that prioritizati
 
 <a id="reference-1"></a>
 
-**[1]** Bourque P., Fairley R. (eds.) [*Guide to the Software Engineering Body of Knowledge (SWEBOK)*](https://www.computer.org/education/bodies-of-knowledge/software-engineering). Version 3.0. IEEE Computer Society, 2014.
+**[1]** Bourque P., Fairley R. (eds.) [_Guide to the Software Engineering Body of Knowledge (SWEBOK)_](https://www.computer.org/education/bodies-of-knowledge/software-engineering). Version 3.0. IEEE Computer Society, 2014.
 
 <a id="reference-2"></a>
 
-**[2]** Babar M.A., Zhang H., Zhu L. [*An empirical study of stakeholder prioritization in requirements engineering*](https://www.researchgate.net/publication/266078340_Systematic_Reviews_in_Requirements_Engineering_A_Systematic_Review). Empirical Software Engineering. 2018. Vol. 23, No. 1. Pp. 233–265.
+**[2]** Babar M.A., Zhang H., Zhu L. [_An empirical study of stakeholder prioritization in requirements engineering_](https://www.researchgate.net/publication/266078340_Systematic_Reviews_in_Requirements_Engineering_A_Systematic_Review). Empirical Software Engineering. 2018. Vol. 23, No. 1. Pp. 233–265.
 
 <a id="reference-3"></a>
 
-**[3]** Davis A., Dieste O., Hickey A., Juristo N., Moreno A.M. [*Effectiveness of requirements elicitation techniques: empirical results derived from a systematic review*](https://ieeexplore.ieee.org/document/1704061). Requirements Engineering. 2006. Vol. 11. Pp. 179–202.
+**[3]** Davis A., Dieste O., Hickey A., Juristo N., Moreno A.M. [_Effectiveness of requirements elicitation techniques: empirical results derived from a systematic review_](https://ieeexplore.ieee.org/document/1704061). Requirements Engineering. 2006. Vol. 11. Pp. 179–202.
 
 <a id="reference-4"></a>
 
-**[4]** Wiegers K., Beatty J. [*Software Requirements*](https://www.oreilly.com/library/view/software-requirements-3rd/9780735679658/). 3rd ed. Microsoft Press, 2013. 648 p.
+**[4]** Wiegers K., Beatty J. [_Software Requirements_](https://www.oreilly.com/library/view/software-requirements-3rd/9780735679658/). 3rd ed. Microsoft Press, 2013. 648 p.
 
 <a id="reference-5"></a>
 
-**[5]** Holla R. [*Assessing the Effectiveness of MoSCoW Prioritization in Software Development: A Holistic Analysis across Methodologies*](https://doi.org/10.4108/eetiot.6515). EAI Endorsed Transactions on Internet of Things. October 2024.
+**[5]** Holla R. [_Assessing the Effectiveness of MoSCoW Prioritization in Software Development: A Holistic Analysis across Methodologies_](https://doi.org/10.4108/eetiot.6515). EAI Endorsed Transactions on Internet of Things. October 2024.
 
 <a id="reference-6"></a>
 
-**[6]** Kravchenko T., Bogdanova T., Shevgunov T. [*Ranking Requirements Using MoSCoW Methodology in Practice*](https://doi.org/10.1007/978-3-031-09073-8_18). In: *Cybernetics Perspectives in Systems*. Springer, 2022. Pp. 188–199.
+**[6]** Kravchenko T., Bogdanova T., Shevgunov T. [_Ranking Requirements Using MoSCoW Methodology in Practice_](https://doi.org/10.1007/978-3-031-09073-8_18). In: _Cybernetics Perspectives in Systems_. Springer, 2022. Pp. 188–199.
 
 <a id="reference-7"></a>
 
-**[7]** del Sagrado J., del Águila I.M. [*Assisted Requirements Selection by Clustering*](https://arxiv.org/abs/2401.12634). arXiv preprint. 2024. arXiv:2401.12634.
+**[7]** del Sagrado J., del Águila I.M. [_Assisted Requirements Selection by Clustering_](https://arxiv.org/abs/2401.12634). arXiv preprint. 2024. arXiv:2401.12634.
 
 <a id="reference-8"></a>
 
-**[8]** Clegg D. [*CASE Method Fast-Track: A RAD Approach*](https://archive.org/details/fasttrackradappr0000cleg). Addison-Wesley, 1994. 192 p.
+**[8]** Clegg D. [_CASE Method Fast-Track: A RAD Approach_](https://archive.org/details/fasttrackradappr0000cleg). Addison-Wesley, 1994. 192 p.
 
 <a id="reference-9"></a>
 
-**[9]** Clegg D. [*MoSCoW Prioritisation*](https://www.agilebusiness.org/dsdm-project-framework/moscow-prioririsation.html). DSDM Project Framework.
+**[9]** Clegg D. [_MoSCoW Prioritisation_](https://www.agilebusiness.org/dsdm-project-framework/moscow-prioririsation.html). DSDM Project Framework.
 
 <a id="reference-10"></a>
 
-**[10]** Saaty T.L. [*Scaling method for priorities in hierarchical structures*](https://superdecisions.com/sd_resources/Paper_ScalingMethod.pdf). Journal of Mathematical Psychology. 1987. Vol. 15, No. 3. Pp. 234–281.
+**[10]** Saaty T.L. [_Scaling method for priorities in hierarchical structures_](https://superdecisions.com/sd_resources/Paper_ScalingMethod.pdf). Journal of Mathematical Psychology. 1987. Vol. 15, No. 3. Pp. 234–281.
 
 <a id="reference-11"></a>
 
-**[11]** Sauerwein E., Bailom F., Matzler K., Hinterhuber H. [*The Kano model: How to delight your customers*](https://www.researchgate.net/publication/240462191_The_Kano_Model_How_to_Delight_Your_Customers). International Working Seminar on Production Economics. 2001. Vol. 1, No. 4. Pp. 313–327.
+**[11]** Sauerwein E., Bailom F., Matzler K., Hinterhuber H. [_The Kano model: How to delight your customers_](https://www.researchgate.net/publication/240462191_The_Kano_Model_How_to_Delight_Your_Customers). International Working Seminar on Production Economics. 2001. Vol. 1, No. 4. Pp. 313–327.
 
 <a id="reference-12"></a>
 
-**[12]** Shamsuzzoha A., Helo P. [*Kano model: A dynamic approach for classifying and prioritizing travellers’ requirements*](https://doi.org/10.1016/j.rtbm.2016.07.001). Research in Transportation Business & Management. 2016. Vol. 20. Pp. 39–47.
+**[12]** Shamsuzzoha A., Helo P. [_Kano model: A dynamic approach for classifying and prioritizing travellers’ requirements_](https://doi.org/10.1016/j.rtbm.2016.07.001). Research in Transportation Business & Management. 2016. Vol. 20. Pp. 39–47.
 
 <a id="reference-13"></a>
 
-**[13]** Wang H., Liang L., Lu T., et al. [*Kano Model Categorization Methods: Typology and Systematic Review*](https://doi.org/10.1177/10963480241230957). Journal of Hospitality & Tourism Research. 2024.
+**[13]** Wang H., Liang L., Lu T., et al. [_Kano Model Categorization Methods: Typology and Systematic Review_](https://doi.org/10.1177/10963480241230957). Journal of Hospitality & Tourism Research. 2024.
 
 <a id="reference-14"></a>
 
-**[14]** Sehlhorst S. [*Prioritizing Software Requirements with Kano Analysis*](https://www.pragmaticinstitute.com/resources/articles/product/prioritizing-software-requirements-with-kano-analysis). Pragmatic Institute.
+**[14]** Sehlhorst S. [_Prioritizing Software Requirements with Kano Analysis_](https://www.pragmaticinstitute.com/resources/articles/product/prioritizing-software-requirements-with-kano-analysis). Pragmatic Institute.
 
 <a id="reference-15"></a>
 
-**[15]** Goldstein K. [*Kano Analysis: the Kano Model Explained*](https://www.qualtrics.com/experience-management/research/kano-analysis/). Qualtrics.
+**[15]** Goldstein K. [_Kano Analysis: the Kano Model Explained_](https://www.qualtrics.com/experience-management/research/kano-analysis/). Qualtrics.
 
 <a id="reference-16"></a>
 
-**[16]** Zadeh L.A. [*Fuzzy sets*](https://doi.org/10.1016/S0019-9958(65)90241-X). Information and Control. 1965. Vol. 8, No. 3. Pp. 338–353.
+**[16]** Zadeh L.A. [_Fuzzy sets_](<https://doi.org/10.1016/S0019-9958(65)90241-X>). Information and Control. 1965. Vol. 8, No. 3. Pp. 338–353.
 
 <a id="reference-17"></a>
 
-**[17]** Chen C.T. [*Extensions of the TOPSIS for group decision-making under fuzzy environment*](https://doi.org/10.1016/S0165-0114(97)00377-1). Fuzzy Sets and Systems. 2000. Vol. 114, No. 1. Pp. 1–9.
+**[17]** Chen C.T. [_Extensions of the TOPSIS for group decision-making under fuzzy environment_](<https://doi.org/10.1016/S0165-0114(97)00377-1>). Fuzzy Sets and Systems. 2000. Vol. 114, No. 1. Pp. 1–9.
 
 <a id="reference-18"></a>
 
-**[18]** Torra V., Narukawa Y. [*Modeling Decisions: Information Fusion and Aggregation Operators*](https://www.researchgate.net/publication/220693669_Modeling_Decisions_Information_Fusion_and_Aggregation_Operators). Springer, 2010. 180 p.
+**[18]** Torra V., Narukawa Y. [_Modeling Decisions: Information Fusion and Aggregation Operators_](https://www.researchgate.net/publication/220693669_Modeling_Decisions_Information_Fusion_and_Aggregation_Operators). Springer, 2010. 180 p.
 
 <a id="reference-19"></a>
 
-**[19]** Xu Z., Yager R.R. [*Intuitionistic fuzzy aggregation operators*](https://www.researchgate.net/publication/3336510_Intuitionistic_Fuzzy_Aggregation_Operators). IEEE Transactions on Fuzzy Systems. 2008. Vol. 16, No. 4. Pp. 761–774.
+**[19]** Xu Z., Yager R.R. [_Intuitionistic fuzzy aggregation operators_](https://www.researchgate.net/publication/3336510_Intuitionistic_Fuzzy_Aggregation_Operators). IEEE Transactions on Fuzzy Systems. 2008. Vol. 16, No. 4. Pp. 761–774.
 
 <a id="reference-20"></a>
 
-**[20]** Atanassov K.T. [*Intuitionistic fuzzy sets*](https://doi.org/10.1016/S0165-0114(86)80034-3). Fuzzy Sets and Systems. 1986. Vol. 20, No. 1. Pp. 87–96.
+**[20]** Atanassov K.T. [_Intuitionistic fuzzy sets_](<https://doi.org/10.1016/S0165-0114(86)80034-3>). Fuzzy Sets and Systems. 1986. Vol. 20, No. 1. Pp. 87–96.
 
 <a id="reference-21"></a>
 
-**[21]** Shih H.S., Shyur H.J., Lee E.S. [*An extension of TOPSIS for group decision making*](https://www.sciencedirect.com/science/article/pii/S0895717706003025). Mathematical and Computer Modelling. 2007. Vol. 45. Pp. 801–813.
+**[21]** Shih H.S., Shyur H.J., Lee E.S. [_An extension of TOPSIS for group decision making_](https://www.sciencedirect.com/science/article/pii/S0895717706003025). Mathematical and Computer Modelling. 2007. Vol. 45. Pp. 801–813.
 
 <a id="reference-22"></a>
 
-**[22]** Tang T.Y., Hanif H. *[Fuzzy Delphi Method: A Step-by-Step Guide to Obtain Expert Consensus on MUETBot Functionalities](https://kwpublications.com/papers_submitted/9950/fuzzy-delphi-method-a-step-by-step-guide-to-obtain-expert-consensus-on-muetbot-functionalities.pdf)*. International Journal of Academic Research in Business and Social Sciences, 2024.
+**[22]** Tang T.Y., Hanif H. _[Fuzzy Delphi Method: A Step-by-Step Guide to Obtain Expert Consensus on MUETBot Functionalities](https://kwpublications.com/papers_submitted/9950/fuzzy-delphi-method-a-step-by-step-guide-to-obtain-expert-consensus-on-muetbot-functionalities.pdf)_. International Journal of Academic Research in Business and Social Sciences, 2024.
 
 <a id="reference-23"></a>
 
-**[23]** garai A. *[Weighted Intuitionistic Fuzzy Delphi Method](https://www.rroij.com/open-access/weighted-intuitionistic-fuzzy-delphi-method.php?aid=38810)*. Journal of Global Research in Computer Science, 2013, Vol. 4, No. 7, pp. 38–42.
+**[23]** garai A. _[Weighted Intuitionistic Fuzzy Delphi Method](https://www.rroij.com/open-access/weighted-intuitionistic-fuzzy-delphi-method.php?aid=38810)_. Journal of Global Research in Computer Science, 2013, Vol. 4, No. 7, pp. 38–42.
 
 <a id="reference-24"></a>
 
-**[24]** Hsu Y.L., Lee C.H., Kreng V.B. *[The Application of Fuzzy Delphi Method and Fuzzy AHP in Lubricant Regenerative Technology Selection](https://doi.org/10.1016/j.eswa.2009.05.068)*. Expert Systems with Applications, 2010, Vol. 37, No. 1, pp. 419–425.
+**[24]** Hsu Y.L., Lee C.H., Kreng V.B. _[The Application of Fuzzy Delphi Method and Fuzzy AHP in Lubricant Regenerative Technology Selection](https://doi.org/10.1016/j.eswa.2009.05.068)_. Expert Systems with Applications, 2010, Vol. 37, No. 1, pp. 419–425.
 
 <a id="reference-25"></a>
 
-**[25]** Mendel J.M., John R.I. [*Type-2 Fuzzy Sets Made Simple*](https://ieeexplore.ieee.org/document/995115). IEEE Transactions on Fuzzy Systems. 2002. Vol. 10(2). Pp. 117–127.
+**[25]** Mendel J.M., John R.I. [_Type-2 Fuzzy Sets Made Simple_](https://ieeexplore.ieee.org/document/995115). IEEE Transactions on Fuzzy Systems. 2002. Vol. 10(2). Pp. 117–127.
 
 <a id="reference-26"></a>
 
-**[26]** Wu D., Mendel J.M. [*Recommendations on Designing Practical Interval Type-2 Fuzzy Systems*](https://arxiv.org/abs/1907.01697). arXiv preprint. 2019. arXiv:1907.01697.
+**[26]** Wu D., Mendel J.M. [_Recommendations on Designing Practical Interval Type-2 Fuzzy Systems_](https://arxiv.org/abs/1907.01697). arXiv preprint. 2019. arXiv:1907.01697.
 
 <a id="reference-27"></a>
 
-**[27]** Sudžum R., Nestić S., Komatina N., Kraišnik M. [*An Intuitionistic Fuzzy Multi-Criteria Approach for Prioritizing Failures That Cause Overproduction: A Case Study in Process Manufacturing*](https://www.mdpi.com/2075-1680/13/6/357). Axioms. 2024. Vol. 13(6). No. 357.
+**[27]** Sudžum R., Nestić S., Komatina N., Kraišnik M. [_An Intuitionistic Fuzzy Multi-Criteria Approach for Prioritizing Failures That Cause Overproduction: A Case Study in Process Manufacturing_](https://www.mdpi.com/2075-1680/13/6/357). Axioms. 2024. Vol. 13(6). No. 357.
 
 <a id="reference-28"></a>
 
-**[28]** Rajaprakash S., Ponnusamy R., Pandurangan J. [*Intuitionistic Fuzzy Analytical Hierarchy Process with Fuzzy Delphi Method*](https://www.researchgate.net/publication/316090463_Intuitionistic_fuzzy_analytical_hierarchy_process_with_fuzzy_Delphi_method). International Journal of Fuzzy Systems. 2017. Vol. 19(3). Pp. 726–737.
+**[28]** Rajaprakash S., Ponnusamy R., Pandurangan J. [_Intuitionistic Fuzzy Analytical Hierarchy Process with Fuzzy Delphi Method_](https://www.researchgate.net/publication/316090463_Intuitionistic_fuzzy_analytical_hierarchy_process_with_fuzzy_Delphi_method). International Journal of Fuzzy Systems. 2017. Vol. 19(3). Pp. 726–737.
 
 <a id="reference-29"></a>
 
-**[29]** Saaty T. [*The Analytic Hierarchy Process*](https://www.researchgate.net/publication/362349026_The_Analytic_Hierarchy_Process). McGraw-Hill, 1980.
+**[29]** Saaty T. [_The Analytic Hierarchy Process_](https://www.researchgate.net/publication/362349026_The_Analytic_Hierarchy_Process). McGraw-Hill, 1980.
 
 <a id="reference-30"></a>
 
-**[30]** Buckley J. [*Fuzzy hierarchical analysis*](https://doi.org/10.1016/0165-0114(85)90090-9). Fuzzy Sets and Systems, 17(3), 1985.
+**[30]** Buckley J. [_Fuzzy hierarchical analysis_](<https://doi.org/10.1016/0165-0114(85)90090-9>). Fuzzy Sets and Systems, 17(3), 1985.
 
 <a id="reference-31"></a>
 
-**[31]** Chang D.-Y. [*Applications of the extent analysis method on fuzzy AHP*](https://www.expertchoice.ir/wp-content/uploads/2017/08/FAHP-Chang-1996.pdf). European Journal of Operational Research, 95(3), 1996.
+**[31]** Chang D.-Y. [_Applications of the extent analysis method on fuzzy AHP_](https://www.expertchoice.ir/wp-content/uploads/2017/08/FAHP-Chang-1996.pdf). European Journal of Operational Research, 95(3), 1996.
 
 <a id="reference-32"></a>
 
-**[32]** Kahraman C., Cebeci U., Ulukan Z. [*Multi-criteria supplier selection using fuzzy AHP*](https://www.researchgate.net/publication/235277936_Multi-criteria_supplier_selection_using_fuzzy_AHP). Engineering Applications of Artificial Intelligence, 17(6), 2004.
+**[32]** Kahraman C., Cebeci U., Ulukan Z. [_Multi-criteria supplier selection using fuzzy AHP_](https://www.researchgate.net/publication/235277936_Multi-criteria_supplier_selection_using_fuzzy_AHP). Engineering Applications of Artificial Intelligence, 17(6), 2004.
 
 <a id="reference-33"></a>
 
-**[33]** Mikhailov L. [*Deriving priorities from fuzzy pairwise comparison judgements*](https://www.researchgate.net/publication/222511354_Deriving_priorities_from_fuzzy_pairwise_comparison_judgements). Knowledge-Based Systems, 15(6), 2003.
+**[33]** Mikhailov L. [_Deriving priorities from fuzzy pairwise comparison judgements_](https://www.researchgate.net/publication/222511354_Deriving_priorities_from_fuzzy_pairwise_comparison_judgements). Knowledge-Based Systems, 15(6), 2003.
 
 <a id="reference-34"></a>
 
-**[34]** Mendel J.M. [*Uncertain Rule-Based Fuzzy Logic Systems: Introduction and New Directions*](https://www.researchgate.net/publication/224285703_Uncertain_rule-based_fuzzy_logic_systems_introduction_and_new_directions). Prentice-Hall, 2001.
+**[34]** Mendel J.M. [_Uncertain Rule-Based Fuzzy Logic Systems: Introduction and New Directions_](https://www.researchgate.net/publication/224285703_Uncertain_rule-based_fuzzy_logic_systems_introduction_and_new_directions). Prentice-Hall, 2001.
 
 <a id="reference-35"></a>
 
-**[35]** Mendel J.M., Bob John R.I. [*Type-2 Fuzzy Sets Made Simple*](https://sipi.usc.edu/~mendel/publications/Mendel%26John%202002.pdf). IEEE Transactions on Fuzzy Systems, 14(6), 2006.
+**[35]** Mendel J.M., Bob John R.I. [_Type-2 Fuzzy Sets Made Simple_](https://sipi.usc.edu/~mendel/publications/Mendel%26John%202002.pdf). IEEE Transactions on Fuzzy Systems, 14(6), 2006.
 
 <a id="reference-36"></a>
 
-**[36]** Kulak O., Kahraman C. [*Fuzzy multi-attribute selection among transportation companies using axiomatic design and analytic hierarchy process*](https://www.researchgate.net/publication/222548501_Fuzzy_Multi-Attribute_Selection_Among_Transportation_Companies_using_Axiomatic_Design_and_Analytic_Hierarchy_Process). International Journal of Production Economics, 90(1), 2005.
+**[36]** Kulak O., Kahraman C. [_Fuzzy multi-attribute selection among transportation companies using axiomatic design and analytic hierarchy process_](https://www.researchgate.net/publication/222548501_Fuzzy_Multi-Attribute_Selection_Among_Transportation_Companies_using_Axiomatic_Design_and_Analytic_Hierarchy_Process). International Journal of Production Economics, 90(1), 2005.
 
 <a id="reference-37"></a>
 
-**[37]** Mikhailov L., Tsvetinov P. [*Evaluation of services using a fuzzy analytic hierarchy process*](https://www.researchgate.net/publication/222670785_Tsvetinov_P_Evaluation_of_services_using_a_fuzzy_analytic_hierarchy_process_Appl_Soft_Comput_5_23-33). Applied Soft Computing, 4(1), 2004.
+**[37]** Mikhailov L., Tsvetinov P. [_Evaluation of services using a fuzzy analytic hierarchy process_](https://www.researchgate.net/publication/222670785_Tsvetinov_P_Evaluation_of_services_using_a_fuzzy_analytic_hierarchy_process_Appl_Soft_Comput_5_23-33). Applied Soft Computing, 4(1), 2004.
 
 <a id="section-17"></a>
 
@@ -2259,7 +2190,7 @@ All actions are accompanied by hints and validity checks for the uploaded files.
 
   - Used to convert linguistic labels into trapezoidal numbers.
 
-**Intuitionistic (triads $(\mu, \nu, \pi)$):**
+**Intuitionistic (triads $`(\mu, \nu, \pi)`$):**
 
 - **Requirements file (CSV):**
 
@@ -2382,4 +2313,3 @@ After the calculations for the selected method are complete, the user can click 
 The developed application demonstrates flexibility in supporting various prioritization methods — from classical to fuzzy. Each method is implemented as an independent module and admits a variety of input formats: both numeric values and linguistic ratings, which are automatically interpreted and converted. This makes it possible to adapt the tool to different analysis scenarios and levels of user preparation — from novice analysts to experienced researchers in the field of decision-making.
 
 In the TOPSIS method, only one stakeholder’s opinion is included for clarity, which simplifies the demonstration of the calculation steps. In Fuzzy Delphi and Fuzzy AHP, ratings can be provided in different forms: linguistic (via a correspondence table) or as ready-made fuzzy numbers. Similarly, in Fuzzy TOPSIS the user can upload their own conversion scale for trapezoidal or intuitionistic ratings. Thus, the application provides a wide range of approaches to accounting for expert uncertainty and is suitable for a great variety of software planning and development scenarios.
-$$
